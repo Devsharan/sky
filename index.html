@@ -15,6 +15,20 @@
 
     <!-- Custom styles for this template -->
     <link href="css/main.css" rel="stylesheet">
+    <script src="js/angular.js"></script>
+    <script>
+        var locations = [{country:"India",state:"Karnataka",city:"Bangalore"},{country:"India",state:"Kerela",city:"Cochin"}];
+        var sports   = [{name:"Football",displayOrder:"1"},{name:"Squash",displayOrder:"3"},{name:"Tennis",displayOrder:"3"},
+            {name:"Badminton",displayOrder:"4"},{name:"Cricket",displayOrder:"5"},{name:"Cricket [Practice Nets]",displayOrder:"6"}];
+
+
+        var bygApp  = angular.module("bygApp",[]);
+       bygApp.controller("bygMainCntlr", function($scope){
+           $scope.locations = locations;
+           $scope.sports = sports;
+       });
+
+    </script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -51,7 +65,7 @@
     </script>
 </head>
 
-<body>
+<body ng-app="bygApp">
 <header>
     <div class="navbar navbar-inverse top--header" role="navigation">
         <div class="container">
@@ -114,24 +128,18 @@
             <div class="col-md-offset-1 col-md-10">
                 <h1 class="txtc white-color banner-title font-l pad-sm-t60 font34-xs">Eat &rarr; Play &rarr; Sleep &rarr; Repeat</h1>
                 <p class="txtc white-color col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">Now booking a playground in Bangalore is super-easy, just a few clicks here and get ready to play...</p>
-                <form class="form-inline sm-txtc" role="form">
+                <form class="form-inline sm-txtc" role="form" ng-controller="bygMainCntlr">
                     <div class="home-search-box mar-t20">
                         <div class="form-group">
                             <label class="sr-only">Choose Your Location</label>
                             <select class="form-control"name='idlocation' id='idlocation'>
-                                <option value='1'>Bangalore</option>
-                                <option value='2'>Cochin</option>
+                                <option ng-repeat="location in locations" value=$index >{{location.city}}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="sr-only">Choose Your Sport</label>
                             <select class="form-control"  name='idsport' id='idsport'>
-                                <option value='1'>Football</option>
-                                <option value='2'>Tennis</option>
-                                <option value='3'>Squash</option>
-                                <option value='4'>Badminton</option>
-                                <option value='5'>Cricket</option>
-                                <option value='6'>Cricket [Practice Nets]</option>
+                                <option ng-repeat="sport in sports" value={{sport.displayOrder}}>{{sport.name}}</option>
                             </select>
                         </div>
 
