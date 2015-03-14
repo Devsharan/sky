@@ -36,25 +36,25 @@
         var bygApp = angular.module("bygApp", ["ngRoute"])
                 .config(function ($routeProvider) {
                     $routeProvider.when("/contact-us", {
-                        templateUrl: "/byg-v2/views/contact-us.html"
+                        templateUrl: "views/contact-us.html"
                     });
 
                     $routeProvider.when("/terms-condition", {
-                        templateUrl: "/byg-v2/views/terms-condition.html"
+                        templateUrl: "views/terms-condition.html"
                     });
                     $routeProvider.when("/privacy-policy", {
-                        templateUrl: "/byg-v2/views/privacy-policy.html"
+                        templateUrl: "views/privacy-policy.html"
                     });
                     $routeProvider.when("/faq", {
-                        templateUrl: "/byg-v2/views/faq.html"
+                        templateUrl: "views/faq.html"
                     });
                     $routeProvider.when("/how-it-works", {
-                        templateUrl: "/byg-v2/views/how-it-works.html"
+                        templateUrl: "views/how-it-works.html"
                     });
 
 
                     $routeProvider.otherwise({
-                        templateUrl: "/byg-v2/views/home.html"
+                        templateUrl: "views/home.html"
                     });
                 });
 
