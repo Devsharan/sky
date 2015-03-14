@@ -1,0 +1,122 @@
+<section class="banner">
+    <div id="carousel-example-generic" class="carousel slide carousel-fade home-banner" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="img/banner1.jpg"/>
+            </div>
+            <div class="item">
+                <img src="img/banner2.jpg"/>
+            </div>
+            <div class="item">
+                <img src="img/banner3.jpg"/>
+            </div>
+        </div>
+    </div>
+    <div class="container banner-inner">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10">
+                <h1 class="txtc white-color banner-title font-l pad-sm-t60 font34-xs">Eat &rarr; Play &rarr;
+                    Sleep &rarr; Repeat</h1>
+
+                <p class="txtc white-color col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">Now booking a playground
+                    in Bangalore is super-easy, just a few clicks here and get ready to play...</p>
+
+                <form class="form-inline sm-txtc" role="form" ng-controller="bygMainCntlr">
+                    <div class="home-search-box mar-t20">
+                        <div class="form-group">
+                            <label class="sr-only">Choose Your Location</label>
+                            <select class="form-control" name='idlocation' id='idlocation'>
+                                <option ng-repeat="location in locations" value=$index>{{location.city}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">Choose Your Sport</label>
+                            <select class="form-control" name='idsport' id='idsport'>
+                                <option ng-repeat="sport in sports" value={{sport.displayOrder}}>{{sport.name}}</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="sr-only">Choose Date</label>
+
+                            <div class="pos-rel">
+                                <input type="text" class="form-control" placeholder="Choose Date" id="datepicker1"
+                                       name="datepicker1">
+                                <span class="date date-home" onclick='fnviewcalendar()' id="dp"></span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick='viewgrounddetails();'>SEARCH</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section> <!--/ Banner Ends Here -->
+
+<section class="container">
+    <div class="txtc col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
+        <h1 class="font-l large-title secondary-color pad-t20">Our Ground Locations</h1>
+
+        <p>We are expanding our network of playgrounds and playcourts in Bangalore and other cities.</p>
+
+        <p>Pretty soon, we will be in your neighbourhood helping you to book and play Football, Cricket, Tennis,
+            Badminton, Table Tennis, Swimming , Snooker and many more…</p>
+
+        <p>Keep watching this space for our new playgrounds and courts.</p>
+    </div>
+    <div class="clearfix txtc">
+        <div class="col-sm-4 pad-t40">
+            <div class="callout-block">
+                <img src="img/callout_icon1.png"/>
+
+                <p class="pad-t20">Want to try out some new tricks after watching yesterday’s EPL ? Craving to catch up
+                    with some old
+                    friends over a game of football ? Hungry to play your heart out and shed some calories?</p>
+
+                <p>Reasons are a lot –no more hassles of booking a football ground now. Just click !</p>
+            </div>
+        </div>
+        <div class="col-sm-4 pad-t40">
+            <div class="callout-block">
+                <img src="img/callout_icon2.png"/>
+
+                <p class="pad-t20">Hit the ball hard and see them flying around the pitch, take a low catch, or uproot
+                    the stumps. Call your colleagues for a game of cricket. Enjoy a game and get some good exercise
+                    too.</p>
+
+                <p>Reasons are a lot –no more hassles of booking a cricket ground now. Just click !</p>
+            </div>
+        </div>
+        <div class="col-sm-4 pad-t40">
+            <div class="callout-block">
+                <img src="img/callout_icon3.png"/>
+
+                <p class="pad-t20">Make your buddy run around the court, try a shot like fedex or try out a Nadalish top
+                    spin. Time to catch up with a tennis buddy ? Enjoy a game and get some good exercise too.</p>
+
+                <p>Reasons are a lot –no more hassles of booking a tennis court now. Just click !</p>
+            </div>
+        </div>
+    </div>
+    <div class="txtc col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3 pad-t40">
+        <img src="img/testimonial_icon.png" class="mar-b10"/>
+
+        <p class="font-italic">Really appreciate the efforts you are making to ensure that your customers are satisfied.
+            The experience was just beyond amazing</p>
+
+        <p class="pad-t10"><a href="#">- Johns George</a></p>
+    </div>
+</section>
