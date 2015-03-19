@@ -1,0 +1,56 @@
+<div class='primary-box clearfix pad-t15 brd-btm' ng-controller="viewSlotCntlr">
+    <div role='form' class='col-sm-9 col-md-10 pad0'> ";
+        <!--    for($i=0;$i<count($playdatesqlarray);$i++){
+            $idgroundcost = $playdatesqlarray[$i]['idgroundcost'];
+            $fromtime = $playdatesqlarray[$i]['fromtime'];
+            $totime = $playdatesqlarray[$i]['totime'];
+            $amount = $playdatesqlarray[$i]['amount'];
+            if(in_array($idgroundcost,$bookedseatsarray)){
+            $table.="-->
+        <div class='form-group col-sm-2 col-xs-4'>
+            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
+                    class='pull-right'>$totime</span></label>
+            <button type='button' class='slot slot-booked'>Booked</button>
+        </div>
+        ";
+        <!--} else if($playdatesqlarray[$i]['amount']<1) {
+        $table.="<div class='form-group col-sm-2 col-xs-4'>
+            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span class='pull-right'>$totime</span></label>
+            <button type='button' class='slot slot-reserved'>N/A</button>
+        </div>";
+        } else {
+        $table.="-->
+        <div class='form-group col-sm-2 col-xs-4' id='availableslot$idgroundcost'>
+            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
+                    class='pull-right'>$totime</span></label>
+            <button type='button' class='slot' id='amount[$idgroundcost]'
+                    onClick='fnbookslot(&#39;$idgroundcost&#39;,1,&#39;$idground&#39;)' ;>Rs $amount
+            </button>
+        </div>
+        <div class='form-group col-sm-2 col-xs-4' id='completedslot$idgroundcost' style='display:none'>
+            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
+                    class='pull-right'>$totime</span></label>
+            <button type='button' class='slot slot-selected' id='amount[$idgroundcost] name=' amount[]
+            ' onclick='fnbookslot(&#39;$idgroundcost&#39;,2,&#39;$idground&#39;)';>Selected</button>
+        </div>
+        <div class='form-group col-sm-2 col-xs-4' id='bookedslot
+ $idgroundcost' style='display:none'>
+            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
+                    class='pull-right'>$totime</span></label>
+            <button type='button' class='slot slot-booked' id='amount[$idgroundcost] name=' amount[]
+            '>Booked</button>
+        </div>
+        <!--$table.="</div><div id='paymentdisplay$idground'></div>";-->
+
+
+        <!--$table="<div class='col-sm-3 col-md-2'>
+            <div class='txtr font12'>
+                <p class='base-price'>Base Amt : <span class='pad-l10 secondary-color price-block'>$totalsum</span></p>
+                <p>Booking Amt: <span class='pad-l10 secondary-color price-block'>$percentageamount</span></p>
+                <p>Service Tax : <span class='pad-l10 secondary-color price-block'>$taxpercentage</span></p>
+                <p>Online fees : <span class='pad-l10 secondary-color price-block'>$onlinepercentage</span></p>
+                <p class='font14-sm'>Total Amt : <span class='pad-l10 secondary-color price-block'>$totalamount</span></p>
+            </div>
+            <button class='btn btn-primary btn-block mar-b15' onclick='registerpage();'>Continue</button>
+        --></div>
+</div>

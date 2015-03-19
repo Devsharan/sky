@@ -17,6 +17,7 @@
     <link href="css/main.css" rel="stylesheet">
     <script type="text/javascript" src="js/angular.js"></script>
     <script type="text/javascript" src="js/angular-route.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.js"></script>
     <script type="text/javascript">
         var locations = [{country: "India", state: "Karnataka", city: "Bangalore"}, {
             country: "India",
@@ -33,7 +34,7 @@
             }, {name: "Cricket [Practice Nets]", displayOrder: "6"}];
 
 
-        var bygApp = angular.module("bygApp", ["ngRoute"])
+        var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap"])
                 .config(function ($routeProvider) {
                     $routeProvider.when("/contact-us", {
                         templateUrl: "views/contact-us.html"
@@ -52,6 +53,13 @@
                         templateUrl: "views/how-it-works.html"
                     });
 
+                    $routeProvider.when("/ground-details", {
+                        templateUrl: "views/ground-details.html"
+                    });
+
+                    $routeProvider.when("/view-slots", {
+                        templateUrl: "views/view-slots.html"
+                    });
 
                     $routeProvider.otherwise({
                         templateUrl: "views/home.html"
@@ -61,6 +69,56 @@
         bygApp.controller("bygMainCntlr", function ($scope) {
             $scope.locations = locations;
             $scope.sports = sports;
+                    $scope.viewGroundDetails = function () {
+                    };
+
+
+                }
+        );
+        bygApp.controller("viewSlotCntlr", function ($scope) {
+
+                    $scope.viewSlots = function () {
+                    };
+
+
+                }
+        );
+
+
+        bygApp.controller('DatepickerDemoCtrl', function ($scope) {
+            $scope.today = function () {
+                $scope.dt = new Date();
+            };
+            $scope.today();
+
+            $scope.clear = function () {
+                $scope.dt = null;
+            };
+
+            // Disable weekend selection
+            $scope.disabled = function (date, mode) {
+                return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+            };
+
+            $scope.toggleMin = function () {
+                $scope.minDate = $scope.minDate ? null : new Date();
+            };
+            $scope.toggleMin();
+
+            $scope.open = function ($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+
+                $scope.opened = true;
+            };
+
+            $scope.dateOptions = {
+                formatYear: 'yy',
+                startingDay: 1
+            };
+
+            $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+            $scope.format = $scope.formats[0];
         });
 
 
@@ -76,13 +134,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <script>
-        $(function () {
-            $("#datepicker1").datepicker({minDate: "+0D", maxDate: "+0M +22D"});
 
-        });
-        function fnviewcalendar() {
-            $('#dp').datepicker('show');
-        }
         function viewgrounddetails() {
             var idlocation = $('#idlocation').val();
             var datepickervalue = $('#datepicker1').val();
