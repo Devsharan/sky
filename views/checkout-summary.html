@@ -1,0 +1,127 @@
+<div class="container mar-t30 mh500">
+    <div class="row">
+
+        <div class="col-md-6">
+            <form name='regform' id='regform' method='Post' action=''>
+                <div class="secondary-box clearfix mh-md-375">
+                    <div class="pad-l20 pad-t5 pad-b5 brd-btm">
+                        <h4 class="primary-title">Contact Details</h4>
+                    </div>
+                    <div class="clearfix pad-sm-t20 hpad-xs-20">
+                        <div class="form-horizontal pad-t20" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="error-text">*</span>Full Name</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id='fullname' name='fullname' value="">
+                                    <input type="hidden" name="totalamount" id="totalamount"
+                                           value="<?php echo $totalamount;?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="error-text">*</span>Email
+                                    Address</label>
+
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" id="email" name="email" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="error-text">*</span>Mobile
+                                    Number</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="mobile" name="mobile" value=""
+                                           onkeypress="return isNumber(event)" maxlength='10'>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"></label>
+
+                                <div class="col-sm-8">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked="checked" id='termsandcondition'> I agree to
+                                            all the <a href="terms-condition.php" target='_blank'>Terms and
+                                            Conditions</a>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-6">
+                                    <button class="btn btn-primary" type='submit' onclick='return fnvalidate();'>Book
+                                        Now
+                                    </button>
+                                    <button class="btn btn-default mar-l10" onclick='homepage();' type='button'>Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <div class="secondary-box clearfix mh-md-375 mar-xs-t30">
+                <div class="pad-l20 pad-t5 pad-b5 brd-btm">
+                    <h4 class="primary-title">Booking Summary</h4>
+                </div>
+                <div class="clearfix pad-sm-t20 hpad-xs-20">
+                    <div class="form-horizontal pad-t20" role="form">
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Ground Name -</label>
+
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $groundname;?></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Address -</label>
+
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $address;?></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Booked Date -</label>
+
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $playdate;?></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Total Hours -</label>
+
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $i;?> hours</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Time </label>
+
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $groundtime;?></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group mar-sm-b0">
+                                <label class="col-sm-4 control-label">Total Price -</label>
+
+                                <div class="col-sm-8">
+                                    <p class="form-control-static font14-sm">Rs. <?php echo $totalamount;?></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

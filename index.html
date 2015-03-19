@@ -61,6 +61,14 @@
                         templateUrl: "views/view-slots.html"
                     });
 
+                    $routeProvider.when("/checkout-summary", {
+                        templateUrl: "views/checkout-summary.html"
+                    });
+                    $routeProvider.when("/support-details", {
+                        templateUrl: "views/support-details.html"
+                    });
+
+
                     $routeProvider.otherwise({
                         templateUrl: "views/home.html"
                     });
