@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="bygApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,9 +36,10 @@
                 }
             ]
         };
-//ground details
-        var groundDetails  = [
-            { "image":"img/1.jpeg",
+        //ground details
+        var groundDetails = [
+            {
+                "image": "img/1.jpeg",
                 "sportsGroundId": "1",
                 "name": "Gopalan International School",
                 "description": "some description",
@@ -49,7 +50,8 @@
                     "longitude": "’77.71768700"
                 }
             },
-            {"image":"img/2.jpeg",
+            {
+                "image": "img/2.jpeg",
                 "sportsGroundId": "2",
                 "name": "Gopalan International School",
                 "description": "some description",
@@ -61,7 +63,8 @@
                 }
 
             },
-            {"image":"img/3.jpeg",
+            {
+                "image": "img/3.jpeg",
                 "sportsGroundId": "2",
                 "name": "Gopalan International School",
                 "description": "some description",
@@ -75,93 +78,105 @@
             }
         ];
         ///slot details json
-       var slotDetail =  {
+        var slotDetail = {
             "sportsGroundId": "1",
-                "slots": [
-            {
-                "startTime": "10:00",
-                "endTime": "11:00",
-                "Rate": "800",
-                "status": "Available",
-                "selected":"false"
-            },
-                    {
-                        "startTime": "11:00",
-                        "endTime": "12:00",
-                        "Rate": "700",
-                        "status": "Booked",
-                        "selected":"false"
-                    },
-                    {
-                        "startTime": "12:00",
-                        "endTime": "13:00",
-                        "Rate": "800",
-                        "status": "NA",
-                        "selected":"false"
-                    },
-                    {
-                        "startTime": "13:00",
-                        "endTime": "14:00",
-                        "Rate": "800",
-                        "status": "Available",
-                        "selected":"false"
-                    },
-                    {
-                        "startTime": "14:00",
-                        "endTime": "15:00",
-                        "Rate": "600",
-                        "status": "NA",
-                        "selected":"false"
-                    },
-                    {
-                        "startTime": "15:00",
-                        "endTime": "16:00",
-                        "Rate": "800",
-                        "status": "Available",
-                        "selected":"false"
-                    },
-                    {
-                        "startTime": "16:00",
-                        "endTime": "17:00",
-                        "Rate": "800",
-                        "status": "Available",
-                        "selected":"false"
-                    },
-                    {
-                        "startTime": "17:00",
-                        "endTime": "18:00",
-                        "Rate": "800",
-                        "status": "Available",
-                        "selected":"false"
-                    },{
-                        "startTime": "18:00",
-                        "endTime": "19:00",
-                        "Rate": "800",
-                        "status": "Available",
-                        "selected":"false"
-                    },{
-                        "startTime": "19:00",
-                        "endTime": "20:00",
-                        "Rate": "800",
-                        "status": "Available",
-                        "selected":"false"
-                    },{
-                        "startTime": "20:00",
-                        "endTime": "21:00",
-                        "Rate": "800",
-                        "status": "Available",
-                        "selected":"false"
-                    },
-                    {
-                        "startTime": "21:00",
-                        "endTime": "22:00",
-                        "Rate": "800",
-                        "status": "Available",
-                        "selected":"false"
-                    }
+            "slots": [
+                {
+                    "startTime": "10:00",
+                    "endTime": "11:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                },
+                {
+                    "startTime": "11:00",
+                    "endTime": "12:00",
+                    "Rate": "700",
+                    "displayText": "Rs.700",
+                    "status": "Booked",
+                    "selected": "false"
+                },
+                {
+                    "startTime": "12:00",
+                    "endTime": "13:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "NA",
+                    "selected": "false"
+                },
+                {
+                    "startTime": "13:00",
+                    "endTime": "14:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                },
+                {
+                    "startTime": "14:00",
+                    "endTime": "15:00",
+                    "Rate": "600",
+                    "displayText": "Rs.600",
+                    "status": "NA",
+                    "selected": "false"
+                },
+                {
+                    "startTime": "15:00",
+                    "endTime": "16:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                },
+                {
+                    "startTime": "16:00",
+                    "endTime": "17:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                },
+                {
+                    "startTime": "17:00",
+                    "endTime": "18:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                }, {
+                    "startTime": "18:00",
+                    "endTime": "19:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                }, {
+                    "startTime": "19:00",
+                    "endTime": "20:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                }, {
+                    "startTime": "20:00",
+                    "endTime": "21:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                },
+                {
+                    "startTime": "21:00",
+                    "endTime": "22:00",
+                    "Rate": "800",
+                    "displayText": "Rs.800",
+                    "status": "Available",
+                    "selected": "false"
+                }
 
 
-        ]
+            ]
         };
 
         var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap"])
@@ -205,9 +220,9 @@
                 });
 
         bygApp.controller("bygMainCntlr", function ($scope) {
-            $scope.sports = sports;
-             $scope.groundDetails =groundDetails;
-    $scope.slots = slotDetail;
+                    $scope.sports = sports;
+                    $scope.groundDetails = groundDetails;
+                    $scope.slots = slotDetail;
                     $scope.viewGroundDetails = function () {
 
                         console.log(groundDetails)
@@ -215,8 +230,45 @@
                     $scope.viewSlots = function () {
 
                     };
+                    $scope.buttonStyle = function (slot) {
+                        var slotButtonClass;
+                        //  var slot = $scope.currentSelectedSlot ===undefined ? $slot: $scope.currentSelectedSlot;
+                        if ((slot.status === "Available") && (slot.selected===true)) {
+                            slotButtonClass = "slot ".concat("slot-selected");
+                        } else if (slot.status === "Available") {
+                            slotButtonClass = "slot ".concat("slot-available");
+                        } else if (slot.status !== "Available") {
+                            slotButtonClass = "slot ".concat("slot-booked");
+                            slot.displayText = slot.status;
 
+                        }
 
+                        return slotButtonClass;
+                    }
+                    $scope.slotSelectionAction = function (slot) {
+
+                        if ((slot.status === "Available")) {
+                            var myBool = Boolean(slot.selected);
+                            if( (myBool===false)) {
+                                slot.displayText = "Selected";
+                                slot.selected = true;
+                            }else{
+                                slot.displayText = "Rs.".concat(slot.Rate);
+                                slot.selected = false;
+                            }
+
+                        }
+                    }
+
+                    $scope.selectionCount = function() {
+                        var count = 0;
+                        angular.forEach($scope.slots.slots, function (slot) {
+                            if(slot.selected==true){
+                                count++;
+                            }
+                        });
+                        return count;
+                    }
 
                 }
         );
@@ -274,7 +326,7 @@
     </script>
 </head>
 
-<body ng-app="bygApp">
+<body ng-controller="bygMainCntlr">
 <header>
     <ng-include src="'views/header.html'"></ng-include>
 </header>
