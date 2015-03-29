@@ -248,8 +248,8 @@
                     $scope.slotSelectionAction = function (slot) {
 
                         if ((slot.status === "Available")) {
-                            var myBool = Boolean(slot.selected);
-                            if( (myBool===false)) {
+
+                            if( (slot.selected===false)) {
                                 slot.displayText = "Selected";
                                 slot.selected = true;
                             }else{
