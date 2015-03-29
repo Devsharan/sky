@@ -34,13 +34,13 @@
                         <div class="form-group">
                             <label class="sr-only">Choose Your Location</label>
                             <select class="form-control" name='idlocation' id='idlocation'>
-                                <option ng-repeat="location in locations" value=$index>{{location.city}}</option>
+                                <option ng-repeat="location in sports.locations" value=$index>{{location.name}}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="sr-only">Choose Your Sport</label>
                             <select class="form-control" name='idsport' id='idsport'>
-                                <option ng-repeat="sport in sports" value={{sport.displayOrder}}>{{sport.name}}</option>
+                                <option ng-repeat="sport in sports.sportsName" value=$index>{{sport.name}}</option>
                             </select>
                         </div>
 

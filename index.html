@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Book Your Ground</title>
 
-
+    https://www.bookyourground.com/index.php
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
@@ -19,20 +19,72 @@
     <script type="text/javascript" src="js/angular-route.js"></script>
     <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.js"></script>
     <script type="text/javascript">
-        var locations = [{country: "India", state: "Karnataka", city: "Bangalore"}, {
-            country: "India",
-            state: "Kerela",
-            city: "Cochin"
-        }];
-        var sports = [{name: "Football", displayOrder: "1"}, {name: "Squash", displayOrder: "3"}, {
-            name: "Tennis",
-            displayOrder: "3"
-        },
-            {name: "Badminton", displayOrder: "4"}, {
-                name: "Cricket",
-                displayOrder: "5"
-            }, {name: "Cricket [Practice Nets]", displayOrder: "6"}];
-
+        var sports = {
+            "sportsName": [
+                {
+                    "name": "Cricket"
+                },
+                {
+                    "name": "Tennis"
+                },
+                {
+                    "name": "Football"
+                }
+            ],
+            "locations": [
+                {
+                    "name": "Bangalore"
+                }
+            ]
+        };
+//ground details
+        var groundDetails  = [
+            {
+                "sportsGroundId": "1",
+                "name": "Gopalan International School",
+                "description": "some description",
+                "websiteUrl": "www.dummysite.com",
+                "address": "WhiteFiles",
+                "coordinates": {
+                    "latitude": "'12.98510800'",
+                    "longitude": "’77.71768700"
+                }
+            },
+            {
+                "sportsGroundId": "2",
+                "name": "Gopalan International School",
+                "description": "some description",
+                "websiteUrl": "www.dummysite.com",
+                "address": "WhiteFiles",
+                "coordinates": {
+                    "latitude": "'12.98510800'",
+                    "longitude": "’77.71768700"
+                }
+            }
+        ];
+        ///slot details json
+       var slotDetail =  {
+            "sportsGroundId": "1",
+                "slotType": "Hourly",
+                "rateType": "RPH",
+                "slots": [
+            {
+                "slotNumber": "3",
+                "Rate": "800",
+                "status": "Available"
+            },
+            {
+                "slotNumber": "1",
+                "Rate": "800",
+                "status": "Booked"
+            },
+            {
+                "slotNumber": "2",
+                "Rate": "200",
+                "status": "NA"
+            }
+        ]
+        };
 
         var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap"])
                 .config(function ($routeProvider) {
@@ -75,9 +127,12 @@
                 });
 
         bygApp.controller("bygMainCntlr", function ($scope) {
-            $scope.locations = locations;
             $scope.sports = sports;
+                    $scope.groundDetails =groundDetails;
+
                     $scope.viewGroundDetails = function () {
+                        $scope.groundDetails =groundDetails;
+                        console.log(groundDetails)
                     };
 
 
@@ -86,6 +141,7 @@
         bygApp.controller("viewSlotCntlr", function ($scope) {
 
                     $scope.viewSlots = function () {
+                        $scope.slots = slotDetail;
                     };
 
 
