@@ -1,5 +1,5 @@
 <div class='primary-box clearfix pad-t15 brd-btm'>
-    <div role='form' class='col-sm-9 col-md-10 pad0'> ";
+    <div role='form' class='col-sm-9 col-md-10 pad0' ng-controller="bygMainCntlr">
         <!--    for($i=0;$i<count($playdatesqlarray);$i++){
             $idgroundcost = $playdatesqlarray[$i]['idgroundcost'];
             $fromtime = $playdatesqlarray[$i]['fromtime'];
@@ -7,12 +7,19 @@
             $amount = $playdatesqlarray[$i]['amount'];
             if(in_array($idgroundcost,$bookedseatsarray)){
             $table.="-->
-        <div class='form-group col-sm-2 col-xs-4'>
+        <div class='form-group col-sm-2 col-xs-4' ng-repeat="slot in slots.slots">
+            <label class='control-label dblock font12 clearfix'><span class='pull-left'>{{slot.startTime}}</span><span
+                    class='pull-right'>{{slot.startTime}}</span></label>
+            <button type='button' class='slot slot-booked'>Rs.{{slot.Rate}}</button>
+        </div>
+       <!-- <div class='form-group col-sm-2 col-xs-4' id='availableslot$idgroundcost'>
             <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
                     class='pull-right'>$totime</span></label>
-            <button type='button' class='slot slot-booked'>Booked</button>
-        </div>
-        ";
+            <button type='button' class='slot slot-reserved' id='amount[$idgroundcost]'
+                    onClick='fnbookslot()' ;>Rs $amount
+            </button>
+        </div>-->
+
         <!--} else if($playdatesqlarray[$i]['amount']<1) {
         $table.="<div class='form-group col-sm-2 col-xs-4'>
             <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span class='pull-right'>$totime</span></label>
@@ -52,5 +59,18 @@
                 <p class='font14-sm'>Total Amt : <span class='pad-l10 secondary-color price-block'>$totalamount</span></p>
             </div>
             <button class='btn btn-primary btn-block mar-b15' onclick='registerpage();'>Continue</button>
-        --></div>
+        -->
+    </div>
+    <div class='col-sm-3 col-md-2'>
+        <div class='txtr font12'>
+            <p class='base-price'>Base Amt : <span class='pad-l5 secondary-color price-block'>$totalsum</span></p>
+            <p>Booking Amt: <span class='pad-l5 secondary-color price-block'>$percentageamount</span></p>
+            <p>Service Tax : <span class='pad-l5 secondary-color price-block'>$taxpercentage</span></p>
+            <p>Online fees : <span class='pad-l5 secondary-color price-block'>$onlinepercentage</span></p>
+            <p class='font14-sm'>Total Amt : <span class='pad-l5 secondary-color price-block'>$totalamount</span></p>
+            <a href="#/checkout-summary" ng-click="viewSlots()" class="btn btn-primary btn-block mar-b15 price-block">Continue</a>
+         </div>
+    </div>
+
+
 </div>

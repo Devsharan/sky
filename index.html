@@ -77,24 +77,90 @@
         ///slot details json
        var slotDetail =  {
             "sportsGroundId": "1",
-                "slotType": "Hourly",
-                "rateType": "RPH",
                 "slots": [
             {
-                "slotNumber": "3",
+                "startTime": "10:00",
+                "endTime": "11:00",
                 "Rate": "800",
-                "status": "Available"
+                "status": "Available",
+                "selected":"false"
             },
-            {
-                "slotNumber": "1",
-                "Rate": "800",
-                "status": "Booked"
-            },
-            {
-                "slotNumber": "2",
-                "Rate": "200",
-                "status": "NA"
-            }
+                    {
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "Rate": "700",
+                        "status": "Booked",
+                        "selected":"false"
+                    },
+                    {
+                        "startTime": "12:00",
+                        "endTime": "13:00",
+                        "Rate": "800",
+                        "status": "NA",
+                        "selected":"false"
+                    },
+                    {
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "Rate": "800",
+                        "status": "Available",
+                        "selected":"false"
+                    },
+                    {
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "Rate": "600",
+                        "status": "NA",
+                        "selected":"false"
+                    },
+                    {
+                        "startTime": "15:00",
+                        "endTime": "16:00",
+                        "Rate": "800",
+                        "status": "Available",
+                        "selected":"false"
+                    },
+                    {
+                        "startTime": "16:00",
+                        "endTime": "17:00",
+                        "Rate": "800",
+                        "status": "Available",
+                        "selected":"false"
+                    },
+                    {
+                        "startTime": "17:00",
+                        "endTime": "18:00",
+                        "Rate": "800",
+                        "status": "Available",
+                        "selected":"false"
+                    },{
+                        "startTime": "18:00",
+                        "endTime": "19:00",
+                        "Rate": "800",
+                        "status": "Available",
+                        "selected":"false"
+                    },{
+                        "startTime": "19:00",
+                        "endTime": "20:00",
+                        "Rate": "800",
+                        "status": "Available",
+                        "selected":"false"
+                    },{
+                        "startTime": "20:00",
+                        "endTime": "21:00",
+                        "Rate": "800",
+                        "status": "Available",
+                        "selected":"false"
+                    },
+                    {
+                        "startTime": "21:00",
+                        "endTime": "22:00",
+                        "Rate": "800",
+                        "status": "Available",
+                        "selected":"false"
+                    }
+
+
         ]
         };
 
@@ -141,38 +207,13 @@
         bygApp.controller("bygMainCntlr", function ($scope) {
             $scope.sports = sports;
              $scope.groundDetails =groundDetails;
-
+    $scope.slots = slotDetail;
                     $scope.viewGroundDetails = function () {
-                     /*   $scope.groundDetails =
-                                [
-                                    {
-                                        "image":"img/1.jpeg",
-                                        "sportsGroundId": "1",
-                                        "name": "Gopalan International School",
-                                        "description": "some description",
-                                        "websiteUrl": "www.dummysite.com",
-                                        "address": "WhiteFiles",
-                                        "coordinates": {
-                                            "latitude": "'12.98510800'",
-                                            "longitude": "’77.71768700"
-                                        }
-                                    },
-                                    { "image":"img/1.jpeg",
-                                        "sportsGroundId": "2",
-                                        "name": "Gopalan International School-2",
-                                        "description": "some description",
-                                        "websiteUrl": "www.dummysite.com",
-                                        "address": "WhiteFiles",
-                                        "coordinates": {
-                                            "latitude": "'12.98510800'",
-                                            "longitude": "’77.71768700"
-                                        }
-                                    }
-                                ];*/
+
                         console.log(groundDetails)
                     };
                     $scope.viewSlots = function () {
-                        $scope.slots = slotDetail;
+
                     };
 
 
@@ -230,17 +271,6 @@
     <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <script>
 
-      /*  function viewgrounddetails() {
-            var idlocation = $('#idlocation').val();
-            var datepickervalue = $('#datepicker1').val();
-            var idsport = $('#idsport').val();
-            if (datepickervalue == '') {
-                $('#dp').datepicker('show');
-            }
-            else {
-                parent.location = 'viewgrounds.php?idlocation=' + idlocation + '&datepicker=' + datepickervalue + '&idsport=' + idsport;
-            }
-        }*/
     </script>
 </head>
 
