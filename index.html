@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Book Your Ground</title>
 
-    https://www.bookyourground.com/index.php
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
@@ -39,7 +38,7 @@
         };
 //ground details
         var groundDetails  = [
-            {
+            { "image":"img/1.jpeg",
                 "sportsGroundId": "1",
                 "name": "Gopalan International School",
                 "description": "some description",
@@ -50,7 +49,7 @@
                     "longitude": "’77.71768700"
                 }
             },
-            {
+            {"image":"img/2.jpeg",
                 "sportsGroundId": "2",
                 "name": "Gopalan International School",
                 "description": "some description",
@@ -60,6 +59,19 @@
                     "latitude": "'12.98510800'",
                     "longitude": "’77.71768700"
                 }
+
+            },
+            {"image":"img/3.jpeg",
+                "sportsGroundId": "2",
+                "name": "Gopalan International School",
+                "description": "some description",
+                "websiteUrl": "www.dummysite.com",
+                "address": "WhiteFiles",
+                "coordinates": {
+                    "latitude": "'12.98510800'",
+                    "longitude": "’77.71768700"
+                }
+
             }
         ];
         ///slot details json
@@ -128,26 +140,45 @@
 
         bygApp.controller("bygMainCntlr", function ($scope) {
             $scope.sports = sports;
-                    $scope.groundDetails =groundDetails;
+             $scope.groundDetails =groundDetails;
 
                     $scope.viewGroundDetails = function () {
-                        $scope.groundDetails =groundDetails;
+                     /*   $scope.groundDetails =
+                                [
+                                    {
+                                        "image":"img/1.jpeg",
+                                        "sportsGroundId": "1",
+                                        "name": "Gopalan International School",
+                                        "description": "some description",
+                                        "websiteUrl": "www.dummysite.com",
+                                        "address": "WhiteFiles",
+                                        "coordinates": {
+                                            "latitude": "'12.98510800'",
+                                            "longitude": "’77.71768700"
+                                        }
+                                    },
+                                    { "image":"img/1.jpeg",
+                                        "sportsGroundId": "2",
+                                        "name": "Gopalan International School-2",
+                                        "description": "some description",
+                                        "websiteUrl": "www.dummysite.com",
+                                        "address": "WhiteFiles",
+                                        "coordinates": {
+                                            "latitude": "'12.98510800'",
+                                            "longitude": "’77.71768700"
+                                        }
+                                    }
+                                ];*/
                         console.log(groundDetails)
                     };
-
-
-                }
-        );
-        bygApp.controller("viewSlotCntlr", function ($scope) {
-
                     $scope.viewSlots = function () {
                         $scope.slots = slotDetail;
                     };
 
 
+
                 }
         );
-
 
         bygApp.controller('DatepickerDemoCtrl', function ($scope) {
             $scope.today = function () {
@@ -199,7 +230,7 @@
     <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <script>
 
-        function viewgrounddetails() {
+      /*  function viewgrounddetails() {
             var idlocation = $('#idlocation').val();
             var datepickervalue = $('#datepicker1').val();
             var idsport = $('#idsport').val();
@@ -209,7 +240,7 @@
             else {
                 parent.location = 'viewgrounds.php?idlocation=' + idlocation + '&datepicker=' + datepickervalue + '&idsport=' + idsport;
             }
-        }
+        }*/
     </script>
 </head>
 
