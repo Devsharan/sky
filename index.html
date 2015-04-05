@@ -18,148 +18,6 @@
     <script type="text/javascript" src="js/angular-route.js"></script>
     <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.js"></script>
     <script type="text/javascript">
-        //ground details
-        /* var groundDetails = [
-         {
-         "image": "img/1.jpeg",
-         "sportsGroundId": "1",
-         "name": "Gopalan International School",
-         "description": "some description",
-         "websiteUrl": "www.dummysite.com",
-         "address": "WhiteFiles",
-         "coordinates": {
-         "latitude": "'12.98510800'",
-         "longitude": "’77.71768700"
-         }
-         },
-         {
-         "image": "img/2.jpeg",
-         "sportsGroundId": "2",
-         "name": "Gopalan International School",
-         "description": "some description",
-         "websiteUrl": "www.dummysite.com",
-         "address": "WhiteFiles",
-         "coordinates": {
-         "latitude": "'12.98510800'",
-         "longitude": "’77.71768700"
-         }
-
-         },
-         {
-         "image": "img/3.jpeg",
-         "sportsGroundId": "2",
-         "name": "Gopalan International School",
-         "description": "some description",
-         "websiteUrl": "www.dummysite.com",
-         "address": "WhiteFiles",
-         "coordinates": {
-         "latitude": "'12.98510800'",
-         "longitude": "’77.71768700"
-         }
-
-         }
-         ];*/
-        ///slot details json
-        /*var slotDetail = {
-         "sportsGroundId": "1",
-         "slots": [
-         {
-         "startTime": "10:00",
-         "endTime": "11:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         },
-         {
-         "startTime": "11:00",
-         "endTime": "12:00",
-         "Rate": "700",
-         "displayText": "Rs.700",
-         "status": "Booked",
-         "selected": false
-         },
-         {
-         "startTime": "12:00",
-         "endTime": "13:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "NA",
-         "selected": false
-         },
-         {
-         "startTime": "13:00",
-         "endTime": "14:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         },
-         {
-         "startTime": "14:00",
-         "endTime": "15:00",
-         "Rate": "600",
-         "displayText": "Rs.600",
-         "status": "NA",
-         "selected": false
-         },
-         {
-         "startTime": "15:00",
-         "endTime": "16:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         },
-         {
-         "startTime": "16:00",
-         "endTime": "17:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         },
-         {
-         "startTime": "17:00",
-         "endTime": "18:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         }, {
-         "startTime": "18:00",
-         "endTime": "19:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         }, {
-         "startTime": "19:00",
-         "endTime": "20:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         }, {
-         "startTime": "20:00",
-         "endTime": "21:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         },
-         {
-         "startTime": "21:00",
-         "endTime": "22:00",
-         "Rate": "800",
-         "displayText": "Rs.800",
-         "status": "Available",
-         "selected": false
-         }
-
-
-         ]
-         };*/
 
         var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap"])
                 .constant("baseUrl", "http://localhost/sports-grounds")
@@ -232,6 +90,7 @@
                     $scope.searchRequest = {};
                     $scope.groundDetails;
                     $scope.slots;
+                    $scope.bookingSummary = {baseAmt:0,bookingAmt:0,serviceTax:0,onlineFees:15,totalAmount:15};
 
                     //data access functions starts here
 
@@ -318,6 +177,7 @@
                                             intermediateSlot.rate = "800";
                                             intermediateSlot.displayText = "Rs.800";
                                             intermediateSlot.status = "Available";
+                                            intermediateSlot.slot = String(i);
                                             intermediateSlot.selected=false;
                                             slots.push(intermediateSlot);
                                         }
@@ -345,6 +205,7 @@
 
                         return slotButtonClass;
                     }
+
                     $scope.slotSelectionAction = function (slot) {
 
                         if ((slot.status === "Available")) {
@@ -356,7 +217,15 @@
                                 slot.displayText = "Rs.".concat(slot.rate);
                                 slot.selected = false;
                             }
-
+                            //calculate summary
+                            var baseAmount = 0;
+                            angular.forEach($scope.slots , function(eachSlot){
+                                if(eachSlot.selected===true)
+                                baseAmount = baseAmount+Number(eachSlot.rate);
+                            });
+                            $scope.bookingSummary.baseAmt = baseAmount;
+                            $scope.bookingSummary.bookingAmt = baseAmount/2;
+                            $scope.bookingSummary.totalAmount = $scope.bookingSummary.bookingAmt + $scope.bookingSummary.onlineFees+ $scope.bookingSummary.serviceTax;
                         }
                     }
 
@@ -368,6 +237,13 @@
                             }
                         });
                         return count;
+                    }
+                    $scope.checkoutSummary = function(){
+                            console.log($scope.searchRequest.date)
+
+                    }
+                    $scope.resetSession = function(){
+
                     }
 
                 }

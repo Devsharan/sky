@@ -61,14 +61,14 @@
             <button class='btn btn-primary btn-block mar-b15' onclick='registerpage();'>Continue</button>
         -->
     </div>
-    <div class='col-sm-3 col-md-2' ng-hide="selectionCount()==0">
+    <div class='col-sm-3 col-md-2' ng-hide="selectionCount()==0" >
         <div class='txtr font12'>
-            <p class='base-price'>Base Amt : <span class='pad-l5 secondary-color price-block'>$totalsum</span></p>
-            <p>Booking Amt: <span class='pad-l5 secondary-color price-block'>$percentageamount</span></p>
-            <p>Service Tax : <span class='pad-l5 secondary-color price-block'>$taxpercentage</span></p>
-            <p>Online fees : <span class='pad-l5 secondary-color price-block'>$onlinepercentage</span></p>
-            <p class='font14-sm'>Total Amt : <span class='pad-l5 secondary-color price-block'>$totalamount</span></p>
-            <a href="#/checkout-summary" ng-click="viewSlots()" class="btn btn-primary btn-block pad-l5 mar-b15 price-block">Continue</a>
+            <p class='base-price'>Base Amt : <span class='pad-l5 secondary-color price-block'>{{bookingSummary.baseAmt}}</span></p>
+            <p>Booking Amt: <span class='pad-l5 secondary-color price-block'>{{bookingSummary.baseAmt}}</span></p>
+            <p>Service Tax : <span class='pad-l5 secondary-color price-block'>{{bookingSummary.bookingAmt}}</span></p>
+            <p>Online fees : <span class='pad-l5 secondary-color price-block'>{{bookingSummary.onlineFees}}</span></p>
+            <p class='font14-sm'>Total Amt : <span class='pad-l5 secondary-color price-block'>{{bookingSummary.totalAmount}}</span></p>
+            <a href="#/checkout-summary" ng-click="checkoutSummary()" class="btn btn-primary btn-block pad-l5 mar-b15 price-block">Continue</a>
         </div>
     </div>
 
