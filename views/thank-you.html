@@ -1,0 +1,54 @@
+<div class="container mar-t30 mh500">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="secondary-box clearfix mh-md-375">
+                <div class="pad-l20 pad-t5 pad-b5 brd-btm txtc">
+                    <a href="index.php" class="logo logo--small mar-t10 mar-b10">Book Your Ground</a>
+                </div>
+                <div class="clearfix pad-sm-t20 hpad-xs-20">
+                    <div class="txtc brd-btm pad-b15">
+                        <img src="img/smile_icon.png" class="pad-t20" />
+                        <h1 class="primary-title">Thank you for booking the ground!</h1>
+                    </div>
+                    <form class="form-horizontal pad-t20" role="form">
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Ground Name -</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $groundname;?></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Address -</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $address;?></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Booked Date -</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo date('d-m-Y',strtotime($playdate));?></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Timings -</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $groundtime;?></p>
+                            </div>
+                        </div>
+                        <div class="form-group mar-sm-b0">
+                            <label class="col-sm-4 control-label">Total Hours -</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static font14-sm"><?php echo $i;?> hours</p>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

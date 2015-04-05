@@ -17,9 +17,10 @@
     <script type="text/javascript" src="js/angular.js"></script>
     <script type="text/javascript" src="js/angular-route.js"></script>
     <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.js"></script>
+    <script type="text/javascript" src="js/angular-uuid2.js"></script>
     <script type="text/javascript">
 
-        var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap"])
+        var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap","angularUUID2"])
                 .constant("baseUrl", "http://localhost/sports-grounds")
                 .config(function ($routeProvider) {
                     $routeProvider.when("/contact-us", {
@@ -52,6 +53,9 @@
                     $routeProvider.when("/support-details", {
                         templateUrl: "views/support-details.html"
                     });
+                    $routeProvider.when("/thank-you", {
+                        templateUrl: "views/thank-you.html"
+                    });
 
 
                     $routeProvider.otherwise({
@@ -81,16 +85,22 @@
         });
 
 
-        bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter) {
+        bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uuid2) {
 
+                    $scope.userSessionId = uuid2.newguid();
+                    //$scope.getId = function(){ };
+                    console.log($scope.userSessionId);
                     initHome.getCityAndLocation().then(function (result) {
                         $scope.sports = result.data;
 
                     });
                     $scope.searchRequest = {};
                     $scope.groundDetails;
+                    $scope.createBookingRequest = { sportsGroundId:"",bookingType:"ONLINE",webIp:"",webSessionId:"", date:"",slot:"" }
                     $scope.slots;
-                    $scope.bookingSummary = {baseAmt:0,bookingAmt:0,serviceTax:0,onlineFees:15,totalAmount:15};
+                    $scope.bookingSummary = {baseAmt:0,bookingAmt:0,serviceTax:0,onlineFees:15,totalAmount:""};
+                    $scope.userBookingId ="";
+                    $scope.updateSlotsToBookingRequest = { bookingId:"",date:"",slot:""};
 
                     //data access functions starts here
 
@@ -205,7 +215,10 @@
 
                         return slotButtonClass;
                     }
-
+                    $scope.confirmBooking = function(){
+                        console.log("confirm booking");
+                        //create user based on user information and confirm booking
+                    }
                     $scope.slotSelectionAction = function (slot) {
 
                         if ((slot.status === "Available")) {
@@ -213,15 +226,93 @@
                             if ((slot.selected === false)) {
                                 slot.displayText = "Selected";
                                 slot.selected = true;
+                                //create booking or add slot ot it
+                                if($scope.userBookingId==="") {
+                                    var bookingRequest = angular.copy($scope.createBookingRequest);
+                                    bookingRequest.sportsGroundId = $scope.selectedGround.SportsGroundID;
+                                    bookingRequest.bookingType = "ONLINE";
+                                    bookingRequest.webIp = "0.0.0.0";
+                                    bookingRequest.webSessionId = $scope.userSessionId;
+                                    bookingRequest.date = $scope.searchRequest.date;
+                                    bookingRequest.slot = slot.slot;
+                                    $http(
+                                            {
+                                                url: "http://localhost/sports-grounds/"+$scope.selectedGround.SportsGroundID+"/slots/"+slot.slot,
+                                                method: "POST",
+                                                data: bookingRequest,
+                                                headers: {
+                                                    'Content-Type': 'application/json; charset=utf-8'
+                                                }
+                                            }
+                                    ).success(function (data) {
+                                                console.log(data);
+                                                return data;
+                                            }
+                                    ).then(function (result) {
+                                                $scope.userBookingId = result.data;
+                                                console.log($scope.userBookingId);
+                                            }
+                                    );
+
+                                }else{
+                                    //add slots to it
+                                    var addSlotRequest = angular.copy($scope.updateSlotsToBookingRequest);
+                                    addSlotRequest.bookingId = $scope.userBookingId;
+                                    addSlotRequest.slot = slot.slot;
+                                    addSlotRequest.date =  $scope.searchRequest.date;
+                                    $http(
+                                            {
+                                                url: "http://localhost//bookings/"+addSlotRequest.bookingId+"/slots",
+                                                method: "PUT",
+                                                data: addSlotRequest,
+                                                headers: {
+                                                    'Content-Type': 'application/json; charset=utf-8'
+                                                }
+                                            }
+                                    ).success(function (data) {
+                                                console.log(data);
+                                                return data;
+                                            }
+                                    ).then(function (result) {
+                                                console.log("added slots to booking".concat($scope.userBookingId).concat("--->").concat(result.data));
+                                            }
+                                    );
+                                }
                             } else {
                                 slot.displayText = "Rs.".concat(slot.rate);
                                 slot.selected = false;
+                                //remove slot if it is un-selected
+                                //add slots to it
+                                var removeSlotRequest = angular.copy($scope.updateSlotsToBookingRequest);
+                                removeSlotRequest.bookingId = $scope.userBookingId;
+                                removeSlotRequest.slot = slot.slot;
+                                removeSlotRequest.date =  $scope.searchRequest.date;
+                                $http(
+                                        {
+                                            url: "http://localhost//bookings/"+removeSlotRequest.bookingId+"/slots/"+removeSlotRequest.slot,
+                                            method: "DELETE",
+                                            data: removeSlotRequest,
+                                            headers: {
+                                                'Content-Type': 'application/json; charset=utf-8'
+                                            }
+
+                                        }
+                                ).success(function (data) {
+                                            console.log(data);
+                                            return data;
+                                        }
+                                ).then(function (result) {
+                                            console.log("removed slots to booking".concat($scope.userBookingId).concat(" and slot ").concat(removeSlotRequest.slot).concat("--->").concat(result.data));
+                                        }
+                                );
                             }
+
+
                             //calculate summary
                             var baseAmount = 0;
                             angular.forEach($scope.slots , function(eachSlot){
                                 if(eachSlot.selected===true)
-                                baseAmount = baseAmount+Number(eachSlot.rate);
+                                    baseAmount = baseAmount+Number(eachSlot.rate);
                             });
                             $scope.bookingSummary.baseAmt = baseAmount;
                             $scope.bookingSummary.bookingAmt = baseAmount/2;
@@ -239,7 +330,7 @@
                         return count;
                     }
                     $scope.checkoutSummary = function(){
-                            console.log($scope.searchRequest.date)
+                        console.log($scope.searchRequest.date)
 
                     }
                     $scope.resetSession = function(){
