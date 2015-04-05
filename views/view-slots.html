@@ -7,18 +7,18 @@
             $amount = $playdatesqlarray[$i]['amount'];
             if(in_array($idgroundcost,$bookedseatsarray)){
             $table.="-->
-        <div class='form-group col-sm-2 col-xs-4' ng-repeat="slot in slots.slots">
+        <div class='form-group col-sm-2 col-xs-4' ng-repeat="slot in slots">
             <label class='control-label dblock font12 clearfix'><span class='pull-left'>{{slot.startTime}}</span><span
-                    class='pull-right'>{{slot.startTime}}</span></label>
+                    class='pull-right'>{{slot.endTime}}</span></label>
             <button type='button' class="slot" ng-click="slotSelectionAction(slot)" ng-class="buttonStyle(slot)">{{slot.displayText}}</button>
         </div>
-       <!-- <div class='form-group col-sm-2 col-xs-4' id='availableslot$idgroundcost'>
-            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
-                    class='pull-right'>$totime</span></label>
-            <button type='button' class='slot slot-reserved' id='amount[$idgroundcost]'
-                    onClick='fnbookslot()' ;>Rs $amount
-            </button>
-        </div>-->
+        <!-- <div class='form-group col-sm-2 col-xs-4' id='availableslot$idgroundcost'>
+             <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
+                     class='pull-right'>$totime</span></label>
+             <button type='button' class='slot slot-reserved' id='amount[$idgroundcost]'
+                     onClick='fnbookslot()' ;>Rs $amount
+             </button>
+         </div>-->
 
         <!--} else if($playdatesqlarray[$i]['amount']<1) {
         $table.="<div class='form-group col-sm-2 col-xs-4'>
@@ -27,26 +27,26 @@
         </div>";
         } else {
         $table.="-->
-      <!--  <div class='form-group col-sm-2 col-xs-4' id='availableslot$idgroundcost'>
-            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
-                    class='pull-right'>$totime</span></label>
-            <button type='button' class='slot' id='amount[$idgroundcost]'
-                    onClick='fnbookslot(&#39;$idgroundcost&#39;,1,&#39;$idground&#39;)' ;>Rs $amount
-            </button>
-        </div>
-        <div class='form-group col-sm-2 col-xs-4' id='completedslot$idgroundcost' style='display:none'>
-            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
-                    class='pull-right'>$totime</span></label>
-            <button type='button' class='slot slot-selected' id='amount[$idgroundcost] name=' amount[]
-            ' onclick='fnbookslot(&#39;$idgroundcost&#39;,2,&#39;$idground&#39;)';>Selected</button>
-        </div>
-        <div class='form-group col-sm-2 col-xs-4' id='bookedslot
- $idgroundcost' style='display:none'>
-            <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
-                    class='pull-right'>$totime</span></label>
-            <button type='button' class='slot slot-booked' id='amount[$idgroundcost] name=' amount[]
-            '>Booked</button>
-        </div>-->
+        <!--  <div class='form-group col-sm-2 col-xs-4' id='availableslot$idgroundcost'>
+              <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
+                      class='pull-right'>$totime</span></label>
+              <button type='button' class='slot' id='amount[$idgroundcost]'
+                      onClick='fnbookslot(&#39;$idgroundcost&#39;,1,&#39;$idground&#39;)' ;>Rs $amount
+              </button>
+          </div>
+          <div class='form-group col-sm-2 col-xs-4' id='completedslot$idgroundcost' style='display:none'>
+              <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
+                      class='pull-right'>$totime</span></label>
+              <button type='button' class='slot slot-selected' id='amount[$idgroundcost] name=' amount[]
+              ' onclick='fnbookslot(&#39;$idgroundcost&#39;,2,&#39;$idground&#39;)';>Selected</button>
+          </div>
+          <div class='form-group col-sm-2 col-xs-4' id='bookedslot
+   $idgroundcost' style='display:none'>
+              <label class='control-label dblock font12 clearfix'><span class='pull-left'>$fromtime</span><span
+                      class='pull-right'>$totime</span></label>
+              <button type='button' class='slot slot-booked' id='amount[$idgroundcost] name=' amount[]
+              '>Booked</button>
+          </div>-->
         <!--$table.="</div><div id='paymentdisplay$idground'></div>";-->
 
 
@@ -69,7 +69,7 @@
             <p>Online fees : <span class='pad-l5 secondary-color price-block'>$onlinepercentage</span></p>
             <p class='font14-sm'>Total Amt : <span class='pad-l5 secondary-color price-block'>$totalamount</span></p>
             <a href="#/checkout-summary" ng-click="viewSlots()" class="btn btn-primary btn-block pad-l5 mar-b15 price-block">Continue</a>
-         </div>
+        </div>
     </div>
 
 

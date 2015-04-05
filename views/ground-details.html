@@ -54,28 +54,43 @@
         </form>
     </div>
 </section>
+
+
+{
+SportsGroundID: "3",
+ShortName: "GIS Tennis 1",
+FullName: "Gopalan International School [ Tennis Court 1 ]",
+Details: "",
+Sport: "Tennis",
+SlotType: "Hourly",
+RateType: "RatePerHour",
+dailyScheduleFirstSlot: "5",
+dailyScheduleLastSlot: "22",
+monthlyScheduleFirstSlot: null,
+monthlyScheduleLastSlot: null
+}
 -->
 <div class='container mar-t30 mh500'>
     <div class='row' ng-repeat="detail in groundDetails">
         <div class='col-md-12'>
 
-                <div class='clearfix brd-btm pad-t15 pad-b15'>
-                    <div class='col-sm-5 col-md-2'>
-                        <img ng-src="{{detail.image}}" class='img-responsive'/>
-                    </div>
-                    <div class='col-sm-7 col-md-8'>
-                        <h4 class='secondary-color'>{{detail.name}}</h4>
-
-                        <p>{{detail.description}}</p>
-
-                        <p>{{detail.address}}</p>
-                    </div>
-                    <div class='col-sm-4 col-md-2 col-sm-offset-8 col-md-offset-0'>
-                        <h3 class='price-color sm-txtr mar-sm-t0'></h3>
-                        <!--<button class='btn btn-primary btn-block' onclick='functionviewslot($idground)';>View Slots</button>-->
-                        <a href="#/view-slots" ng-click="viewSlots()" class="btn btn-primary btn-block">View Slots</a>
-                    </div>
+            <div class='clearfix brd-btm pad-t15 pad-b15'>
+                <div class='col-sm-5 col-md-2'>
+                    <img ng-src="{{detail.image}}" class='img-responsive'/>
                 </div>
+                <div class='col-sm-7 col-md-8'>
+                    <h4 class='secondary-color'>{{detail.ShortName}}</h4>
+
+                    <p>{{detail.FullName}}</p>
+
+                    <p>{{detail.Sport}}</p>
+                </div>
+                <div class='col-sm-4 col-md-2 col-sm-offset-8 col-md-offset-0'>
+                    <h3 class='price-color sm-txtr mar-sm-t0'></h3>
+                    <!--<button class='btn btn-primary btn-block' onclick='functionviewslot($idground)';>View Slots</button>-->
+                    <a href="#/view-slots" ng-click="viewSlots(detail)" class="btn btn-primary btn-block">View Slots</a>
+                </div>
+            </div>
 
 
         </div>

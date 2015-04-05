@@ -18,168 +18,151 @@
     <script type="text/javascript" src="js/angular-route.js"></script>
     <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.js"></script>
     <script type="text/javascript">
-        var sports = {
-            "sportsName": [
-                {
-                    "name": "Cricket"
-                },
-                {
-                    "name": "Tennis"
-                },
-                {
-                    "name": "Football"
-                }
-            ],
-            "locations": [
-                {
-                    "name": "Bangalore"
-                }
-            ]
-        };
         //ground details
-        var groundDetails = [
-            {
-                "image": "img/1.jpeg",
-                "sportsGroundId": "1",
-                "name": "Gopalan International School",
-                "description": "some description",
-                "websiteUrl": "www.dummysite.com",
-                "address": "WhiteFiles",
-                "coordinates": {
-                    "latitude": "'12.98510800'",
-                    "longitude": "’77.71768700"
-                }
-            },
-            {
-                "image": "img/2.jpeg",
-                "sportsGroundId": "2",
-                "name": "Gopalan International School",
-                "description": "some description",
-                "websiteUrl": "www.dummysite.com",
-                "address": "WhiteFiles",
-                "coordinates": {
-                    "latitude": "'12.98510800'",
-                    "longitude": "’77.71768700"
-                }
+        /* var groundDetails = [
+         {
+         "image": "img/1.jpeg",
+         "sportsGroundId": "1",
+         "name": "Gopalan International School",
+         "description": "some description",
+         "websiteUrl": "www.dummysite.com",
+         "address": "WhiteFiles",
+         "coordinates": {
+         "latitude": "'12.98510800'",
+         "longitude": "’77.71768700"
+         }
+         },
+         {
+         "image": "img/2.jpeg",
+         "sportsGroundId": "2",
+         "name": "Gopalan International School",
+         "description": "some description",
+         "websiteUrl": "www.dummysite.com",
+         "address": "WhiteFiles",
+         "coordinates": {
+         "latitude": "'12.98510800'",
+         "longitude": "’77.71768700"
+         }
 
-            },
-            {
-                "image": "img/3.jpeg",
-                "sportsGroundId": "2",
-                "name": "Gopalan International School",
-                "description": "some description",
-                "websiteUrl": "www.dummysite.com",
-                "address": "WhiteFiles",
-                "coordinates": {
-                    "latitude": "'12.98510800'",
-                    "longitude": "’77.71768700"
-                }
+         },
+         {
+         "image": "img/3.jpeg",
+         "sportsGroundId": "2",
+         "name": "Gopalan International School",
+         "description": "some description",
+         "websiteUrl": "www.dummysite.com",
+         "address": "WhiteFiles",
+         "coordinates": {
+         "latitude": "'12.98510800'",
+         "longitude": "’77.71768700"
+         }
 
-            }
-        ];
+         }
+         ];*/
         ///slot details json
-        var slotDetail = {
-            "sportsGroundId": "1",
-            "slots": [
-                {
-                    "startTime": "10:00",
-                    "endTime": "11:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                },
-                {
-                    "startTime": "11:00",
-                    "endTime": "12:00",
-                    "Rate": "700",
-                    "displayText": "Rs.700",
-                    "status": "Booked",
-                    "selected": false
-                },
-                {
-                    "startTime": "12:00",
-                    "endTime": "13:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "NA",
-                    "selected": false
-                },
-                {
-                    "startTime": "13:00",
-                    "endTime": "14:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                },
-                {
-                    "startTime": "14:00",
-                    "endTime": "15:00",
-                    "Rate": "600",
-                    "displayText": "Rs.600",
-                    "status": "NA",
-                    "selected": false
-                },
-                {
-                    "startTime": "15:00",
-                    "endTime": "16:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                },
-                {
-                    "startTime": "16:00",
-                    "endTime": "17:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                },
-                {
-                    "startTime": "17:00",
-                    "endTime": "18:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                }, {
-                    "startTime": "18:00",
-                    "endTime": "19:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                }, {
-                    "startTime": "19:00",
-                    "endTime": "20:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                }, {
-                    "startTime": "20:00",
-                    "endTime": "21:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                },
-                {
-                    "startTime": "21:00",
-                    "endTime": "22:00",
-                    "Rate": "800",
-                    "displayText": "Rs.800",
-                    "status": "Available",
-                    "selected": false
-                }
+        /*var slotDetail = {
+         "sportsGroundId": "1",
+         "slots": [
+         {
+         "startTime": "10:00",
+         "endTime": "11:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         },
+         {
+         "startTime": "11:00",
+         "endTime": "12:00",
+         "Rate": "700",
+         "displayText": "Rs.700",
+         "status": "Booked",
+         "selected": false
+         },
+         {
+         "startTime": "12:00",
+         "endTime": "13:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "NA",
+         "selected": false
+         },
+         {
+         "startTime": "13:00",
+         "endTime": "14:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         },
+         {
+         "startTime": "14:00",
+         "endTime": "15:00",
+         "Rate": "600",
+         "displayText": "Rs.600",
+         "status": "NA",
+         "selected": false
+         },
+         {
+         "startTime": "15:00",
+         "endTime": "16:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         },
+         {
+         "startTime": "16:00",
+         "endTime": "17:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         },
+         {
+         "startTime": "17:00",
+         "endTime": "18:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         }, {
+         "startTime": "18:00",
+         "endTime": "19:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         }, {
+         "startTime": "19:00",
+         "endTime": "20:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         }, {
+         "startTime": "20:00",
+         "endTime": "21:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         },
+         {
+         "startTime": "21:00",
+         "endTime": "22:00",
+         "Rate": "800",
+         "displayText": "Rs.800",
+         "status": "Available",
+         "selected": false
+         }
 
 
-            ]
-        };
+         ]
+         };*/
 
         var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap"])
+                .constant("baseUrl", "http://localhost/sports-grounds")
                 .config(function ($routeProvider) {
                     $routeProvider.when("/contact-us", {
                         templateUrl: "views/contact-us.html"
@@ -201,7 +184,6 @@
                     $routeProvider.when("/ground-details", {
                         templateUrl: "views/ground-details.html"
                     });
-
                     $routeProvider.when("/view-slots", {
                         templateUrl: "views/view-slots.html"
                     });
@@ -219,21 +201,139 @@
                     });
                 });
 
-        bygApp.controller("bygMainCntlr", function ($scope) {
-                    $scope.sports = sports;
-                    $scope.groundDetails = groundDetails;
-                    $scope.slots = slotDetail;
-                    $scope.viewGroundDetails = function () {
+        bygApp.service('initHome', function ($http) {
+            this.getCityAndLocation = function () {
+                return $http.get("http://localhost/sports-grounds").success(function (data) {
+                    console.log(data);
+                    return data;
+                });
+                this.getGroundDetails = function ($date, $sportsName, $location) {
+                    return $http.get(
+                            {
+                                url: "http://localhost/sports-grounds/search",
+                                method: "GET",
+                                params: {sportsName: $sportsName, date: $date, location: $location}
+                            }
+                    ).success(function (data) {
+                                console.log(data);
+                                return data;
+                            });
+                };
+            };
+        });
 
-                        console.log(groundDetails)
-                    };
-                    $scope.viewSlots = function () {
+
+        bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter) {
+
+                    initHome.getCityAndLocation().then(function (result) {
+                        $scope.sports = result.data;
+
+                    });
+                    $scope.searchRequest = {};
+                    $scope.groundDetails;
+                    $scope.slots;
+
+                    //data access functions starts here
+
+                    $scope.viewGroundDetails = function (initHome) {
+                        var date = $filter('date')($scope.searchRequest.date, 'yyyy-MM-dd');
+                        var location = $scope.searchRequest.location.City;
+                        var sportsName = $scope.searchRequest.sportsName.Sport;
+                        console.log(date)
+                        console.log(location)
+                        console.log(sportsName)
+                        $http(
+                                {
+                                    url: "http://localhost/sports-grounds/search",
+                                    method: "GET",
+                                    params: {sportsName: sportsName, date: date, location: location}
+                                }
+                        ).success(function (data) {
+                                    console.log(data);
+                                    return data;
+                                }).then(function (result) {
+                                    $scope.groundDetails = result.data;
+                                    angular.forEach($scope.groundDetails, function (value) {
+                                        value.image = "img/".concat(value.SportsGroundID).concat(".jpeg");
+                                    });
+                                });
+
+                        console.log($scope.groundDetails)
+
 
                     };
+
+                    $scope.viewSlots = function($selectedGround) {
+
+                        $scope.selectedGround = $selectedGround;
+
+                        var date =  $filter('date')('2015-01-04', 'yyyy-MM-dd');//$filter('date')($scope.searchRequest.date, 'yyyy-MM-dd');
+                        return $http(
+                                {
+                                    url: "http://localhost/sports-grounds/" + $selectedGround.SportsGroundID,
+                                    method: "GET",
+                                    params: {date: date}
+                                }
+                        ).success(function (data) {
+                                    console.log(data);
+                                    return data;
+                                }).then(function (result) {
+                                    // $scope.slots = result.data;
+
+                                    var slotDuration  ;
+
+                                    switch($selectedGround.SlotType) {
+                                        case 'Hourly':
+                                            slotDuration = 1;
+                                            break;
+                                        case 'HalfHourly':
+                                            slotDuration=1;
+                                            break;
+                                        default:
+                                            slotDuration = 1;
+                                    }
+
+                                    var firstSlot = $selectedGround.dailyScheduleFirstSlot;
+                                    var lastSlot = $selectedGround.dailyScheduleLastSlot;
+
+
+                                    function isBooked($slotNumber) {
+                                        var isBooked = false;
+                                        angular.forEach(result.data, function (bookedSlot) {
+                                            if (bookedSlot.Slot === $slotNumber) {
+                                                isBooked = true;
+                                            }
+                                        })
+                                        return isBooked;
+                                    }
+
+                                    var slots  = [];
+                                    var slot = {startTime:"",endTime:"",rate:"",displayText:"",status:"",selected:false};
+
+                                    for(var i=Number(firstSlot);i<=Number(lastSlot);i++) {
+                                        if(!isBooked(String(i))){
+                                            var intermediateSlot = angular.copy(slot);
+                                            intermediateSlot.startTime = String(i).concat(":00");
+                                            intermediateSlot.endTime   = String(i+Number(slotDuration)).concat(":00");
+                                            intermediateSlot.rate = "800";
+                                            intermediateSlot.displayText = "Rs.800";
+                                            intermediateSlot.status = "Available";
+                                            intermediateSlot.selected=false;
+                                            slots.push(intermediateSlot);
+                                        }
+
+                                    }
+                                    $scope.slots = slots;
+                                    console.log($scope.slots)
+                                });
+                        ;
+
+                    };
+
                     $scope.buttonStyle = function (slot) {
                         var slotButtonClass;
                         //  var slot = $scope.currentSelectedSlot ===undefined ? $slot: $scope.currentSelectedSlot;
-                        if ((slot.status === "Available") && (slot.selected===true)) {
+                        if ((slot.status === "Available") && (slot.selected === true)) {
                             slotButtonClass = "slot ".concat("slot-selected");
                         } else if (slot.status === "Available") {
                             slotButtonClass = "slot ".concat("slot-available");
@@ -249,21 +349,21 @@
 
                         if ((slot.status === "Available")) {
 
-                            if( (slot.selected===false)) {
+                            if ((slot.selected === false)) {
                                 slot.displayText = "Selected";
                                 slot.selected = true;
-                            }else{
-                                slot.displayText = "Rs.".concat(slot.Rate);
+                            } else {
+                                slot.displayText = "Rs.".concat(slot.rate);
                                 slot.selected = false;
                             }
 
                         }
                     }
 
-                    $scope.selectionCount = function() {
+                    $scope.selectionCount = function () {
                         var count = 0;
-                        angular.forEach($scope.slots.slots, function (slot) {
-                            if(slot.selected==true){
+                        angular.forEach($scope.slots, function (slot) {
+                            if (slot.selected == true) {
                                 count++;
                             }
                         });
