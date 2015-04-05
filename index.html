@@ -18,9 +18,10 @@
     <script type="text/javascript" src="js/angular-route.js"></script>
     <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.js"></script>
     <script type="text/javascript" src="js/angular-uuid2.js"></script>
+    <script type="text/javascript" src="js/angular-touch.js"></script>
     <script type="text/javascript">
 
-        var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap","angularUUID2"])
+        var bygApp = angular.module("bygApp", ["ngTouch","ngRoute", "ui.bootstrap","angularUUID2"])
                 .constant("baseUrl", "http://localhost/sports-grounds")
                 .config(function ($routeProvider) {
                     $routeProvider.when("/contact-us", {
