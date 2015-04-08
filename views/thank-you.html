@@ -14,34 +14,34 @@
                         <div class="form-group mar-sm-b0">
                             <label class="col-sm-4 control-label">Ground Name -</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static font14-sm"><?php echo $groundname;?></p>
+                                <p class="form-control-static font14-sm">{{selectedGround.ShortName}}</p>
                             </div>
                         </div>
 
                         <div class="form-group mar-sm-b0">
                             <label class="col-sm-4 control-label">Address -</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static font14-sm"><?php echo $address;?></p>
+                                <p class="form-control-static font14-sm">{{selectedGround.FullName}}</p>
                             </div>
                         </div>
 
                         <div class="form-group mar-sm-b0">
                             <label class="col-sm-4 control-label">Booked Date -</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static font14-sm"><?php echo date('d-m-Y',strtotime($playdate));?></p>
+                                <p class="form-control-static font14-sm">{{searchRequest.date}}</p>
                             </div>
                         </div>
 
                         <div class="form-group mar-sm-b0">
                             <label class="col-sm-4 control-label">Timings -</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static font14-sm"><?php echo $groundtime;?></p>
+                                <p class="form-control-static font14-sm"></p>
                             </div>
                         </div>
                         <div class="form-group mar-sm-b0">
                             <label class="col-sm-4 control-label">Total Hours -</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static font14-sm"><?php echo $i;?> hours</p>
+                                <p class="form-control-static font14-sm"> hours</p>
                             </div>
                         </div>
 

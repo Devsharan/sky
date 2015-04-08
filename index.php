@@ -124,9 +124,12 @@ function createBooking($groundId, $slotId)
         $resultSet = $dbCon->query("SELECT @bookingId")->fetch(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         $dbCon = null;
-         $app->response()->header('Content-Type', 'application/json');
-         $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-        echo json_encode($resultSet['@bookingId']);
+        $app->response()->header('Content-Type', 'application/json');
+        $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+        $res = new stdClass();
+        $res->success = $resultSet['@bookingId'];
+        echo json_encode($res);
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
@@ -155,7 +158,9 @@ function addSlotToBooking($bookingId)
         $app->response()->header('Content-Type', 'application/json');
         $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-        echo json_encode("success");
+        $res = new stdClass();
+        $res->success = "success";
+        echo json_encode($res);
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
@@ -185,7 +190,9 @@ function cancelSlotFromBooking($bookingId, $slotId)
         $app->response()->header('Content-Type', 'application/json');
          $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-        echo json_encode("success");
+        $res = new stdClass();
+        $res->success = "success";
+        echo json_encode($res);
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
@@ -214,12 +221,16 @@ function removeSlotFromBooking($bookingId, $slotId)
         $app->response()->header('Content-Type', 'application/json');
         $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-        echo json_encode("success");
+        $res = new stdClass();
+        $res->success = "success";
+        echo json_encode($res);
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
 
 }
+//IN inBookingID INTEGER,
+//IN inBookingType ENUM('ONLINE', 'ADMIN'),IN inUserName VARCHAR(45),IN inUserEmail VARCHAR(45),IN inPhoneNumber VARCHAR(45),OUT OutUserID INT(11)
 
 function confirmBooking($bookingId)
 {
@@ -246,7 +257,11 @@ function confirmBooking($bookingId)
         $dbCon = null;
         $app->response()->header('Content-Type', 'application/json');
         $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-        echo json_encode($resultSet['@userId']);
+
+        $res = new stdClass();
+        $res->success = $resultSet['@userId'];
+        echo json_encode($res);
+
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }

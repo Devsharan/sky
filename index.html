@@ -18,10 +18,9 @@
     <script type="text/javascript" src="js/angular-route.js"></script>
     <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.js"></script>
     <script type="text/javascript" src="js/angular-uuid2.js"></script>
-    <script type="text/javascript" src="js/angular-touch.js"></script>
     <script type="text/javascript">
 
-        var bygApp = angular.module("bygApp", ["ngTouch","ngRoute", "ui.bootstrap","angularUUID2"])
+        var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap","angularUUID2"])
                 .constant("baseUrl", "http://localhost/sports-grounds")
                 .config(function ($routeProvider) {
                     $routeProvider.when("/contact-us", {
@@ -94,7 +93,9 @@
                     $scope.createBookingRequest = { sportsGroundId:"",bookingType:"ONLINE",webIp:"",webSessionId:"", date:"",slot:"" }
                     $scope.slots;
                     $scope.bookingSummary = {baseAmt:0,bookingAmt:0,serviceTax:0,onlineFees:15,totalAmount:""};
+                    $scope.userDetails ={userId:"",name:"",email:"",phoneNumber:""};
                     $scope.userBookingId ="";
+                    $scope.userId ="";
                     $scope.updateSlotsToBookingRequest = { bookingId:"",date:"",slot:""};
                     $scope.searchPanel = {location:[], sports:[],selectedLocation:"Bangalore",selectedSports:"",selectedDate:""};
 
@@ -159,6 +160,7 @@
                         $scope.selectedGround = $selectedGround;
 
                         var date =  $filter('date')('2015-01-04', 'yyyy-MM-dd');//$filter('date')($scope.searchRequest.date, 'yyyy-MM-dd');
+                        $scope.searchRequest.date = date;
                         return $http(
                                 {
                                     url: "http://localhost/sports-grounds/" + $selectedGround.SportsGroundID,
@@ -238,8 +240,32 @@
                         return slotButtonClass;
                     }
                     $scope.confirmBooking = function(){
+
+                        var bookingConfirmationRequest  = {bookingType:"ONLINE",userName:$scope.userDetails.name,userEmail:$scope.userDetails.email,phoneNumber:$scope.userDetails.phoneNumber};
+
+
+                        $http(
+                                {
+                                    url: "http://localhost/bookings/"+$scope.userBookingId,
+                                    method: "PUT",
+                                    data: bookingConfirmationRequest,
+                                    headers: {
+                                        'Content-Type': 'application/json; charset=utf-8'
+                                    }
+                                }
+                        ).success(function (data) {
+                                    console.log(data);
+                                    return data;
+                                }
+                        ).then(function (result) {
+                                    $scope.userId = result.data.success;
+                                    console.log( $scope.userId);
+                                }
+                        );
                         console.log("confirm booking");
+                        $scope.userBookingId="";
                         //create user based on user information and confirm booking
+
                     }
                     $scope.slotSelectionAction = function (slot) {
 
@@ -271,7 +297,7 @@
                                                 return data;
                                             }
                                     ).then(function (result) {
-                                                $scope.userBookingId = result.data;
+                                                $scope.userBookingId = Number(result.data.success);
                                                 console.log($scope.userBookingId);
                                             }
                                     );
