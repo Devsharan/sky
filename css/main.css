@@ -40,6 +40,9 @@ CUSTOM FONTS
 
 }
 
+.glyphicon-calendar:before {
+    content: "\e109"
+}
 
 
 body{font-family: 'Opensansregular'; font-size: 14px; color: #444444;}
