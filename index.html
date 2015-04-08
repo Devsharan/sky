@@ -89,12 +89,6 @@
         bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uuid2) {
 
                     $scope.userSessionId = uuid2.newguid();
-                    //$scope.getId = function(){ };
-                    console.log($scope.userSessionId);
-                    initHome.getCityAndLocation().then(function (result) {
-                        $scope.sports = result.data;
-
-                    });
                     $scope.searchRequest = {};
                     $scope.groundDetails;
                     $scope.createBookingRequest = { sportsGroundId:"",bookingType:"ONLINE",webIp:"",webSessionId:"", date:"",slot:"" }
@@ -102,6 +96,33 @@
                     $scope.bookingSummary = {baseAmt:0,bookingAmt:0,serviceTax:0,onlineFees:15,totalAmount:""};
                     $scope.userBookingId ="";
                     $scope.updateSlotsToBookingRequest = { bookingId:"",date:"",slot:""};
+                    $scope.searchPanel = {location:[], sports:[],selectedLocation:"Bangalore",selectedSports:"",selectedDate:""};
+
+                    console.log($scope.userSessionId);
+                    initHome.getCityAndLocation().then(function (result) {
+                        $scope.sports = result.data;
+
+                       /* function uniqueCollection(collection,keyName) {
+                            var output = [],
+                                    keys = [];
+
+                            angular.forEach(collection, function(item) {
+                                var key = item[keyName];
+                                if(keys.indexOf(key) === -1) {
+                                    keys.push(key);
+                                    output.push(item[keyName]);
+                                }
+                            });
+                            return output;
+                        }
+
+                        $scope.searchPanel.sports = uniqueCollection(result.data,"Sport");
+                        $scope.searchPanel.location = uniqueCollection(result.data,"City");
+                        $scope.searchPanel.selectedLocation = "Bangaluru";
+                        $scope.searchPanel.selectedSports = "Football";*/
+
+
+                    });
 
                     //data access functions starts here
 

@@ -231,19 +231,22 @@ function confirmBooking($bookingId)
     try {
         $dbCon = getBygConnection();
 
-        $sql = 'CALL Booking_ConfirmOnlineBooking(?,?)';
+        $sql = 'CALL Booking_ConfirmBookingWithUser(?,?,?,?,?,@userId)';
         $stmt = $dbCon->prepare($sql);
 
         $stmt->bindParam(1, $bookingId);
-        $stmt->bindParam(2, $input->userId);
+        $stmt->bindParam(2, $input->bookingType);
+        $stmt->bindParam(3, $input->userName);
+        $stmt->bindParam(4, $input->userEmail);
+        $stmt->bindParam(5, $input->phoneNumber);
         $stmt->execute();
+        $resultSet = $dbCon->query("SELECT @userId")->fetch(PDO::FETCH_ASSOC);
 
         $stmt->closeCursor();
         $dbCon = null;
         $app->response()->header('Content-Type', 'application/json');
-         $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-
-        echo json_encode("success");
+        $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+        echo json_encode($resultSet['@userId']);
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
