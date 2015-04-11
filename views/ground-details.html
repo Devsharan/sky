@@ -1,75 +1,37 @@
-<!--
 <section class="primary-box">
     <div class="container">
         <form class="form-inline" role="form">
 
-            <div class="pad-t10 pad-b10">
-                <div class="form-group">
-                    <label class="sr-only">Choose Your Sport</label>
-                    <select class="form-control" name='idsport' id='idsport'>
-                        </option>
 
-                    </select>
+            <div class="form-group">
+                <label class="sr-only">Choose Your Sport</label>
+                <select class="form-control" ng-options=" City for City in searchPanel.locations"
+                        ng-model="searchRequest.location">
+                    <option value="">Choose Your Location</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <select class="form-control" ng-options="Sport for Sport in searchPanel.sports"
+                        ng-model="searchRequest.sportsName">
+                    <option value="">Choose Your Sport</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <!-- <label class="sr-only">Choose Date</label>-->
+                <div class="pos-rel">
+                    <input type="text"  class="form-control" ng-model="searchRequest.date" datepicker/>
                 </div>
-
-                <div class="form-group">
-                    <label class="sr-only">Choose Your Location</label>
-                    <select
-                    <select class="form-control" name='idlocation' id='idlocation'>
-                        <?php for($i=0;$i<count($arraylocation);$i++){?>
-                        <option value='<?php echo $arraylocation[$i][' idlocation
-                        '];?>'
-                        <?php if($_SESSION['idlocation']==$arraylocation[$i]['idlocation'])
-				{
-				   echo "selected=selected";
-				}
-				else{
-				}?>><?php echo $arraylocation[$i]['locationname'];?></option>
-                        <?php }?>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="sr-only">Choose Date</label>
-
-                    <div class="pos-rel">
-
-                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt"
-                               is-open="opened" min-date="minDate" max-date="'2015-06-22'"
-                               datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
-                               ng-required="true" close-text="Close"/>
-              <span class="date date-home">
-                <button type="button" class="btn btn-default" ng-click="open($event)"><i
-                        class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-
-                    </div>
-                </div>
-
-                <a href="#/ground-details" ng-click="viewGroundDetails()" class="btn btn-primary">SEARCH</a>
 
 
             </div>
 
+            <a ng-click="viewGroundDetails()" class="btn btn-primary">Search</a>
+
         </form>
     </div>
 </section>
-
-
-{
-SportsGroundID: "3",
-ShortName: "GIS Tennis 1",
-FullName: "Gopalan International School [ Tennis Court 1 ]",
-Details: "",
-Sport: "Tennis",
-SlotType: "Hourly",
-RateType: "RatePerHour",
-dailyScheduleFirstSlot: "5",
-dailyScheduleLastSlot: "22",
-monthlyScheduleFirstSlot: null,
-monthlyScheduleLastSlot: null
-}
--->
 <div class='container mar-t30 mh500'>
     <div class='row' ng-repeat="detail in groundDetails">
         <div class='col-md-12'>
@@ -88,10 +50,43 @@ monthlyScheduleLastSlot: null
                 <div class='col-sm-4 col-md-2 col-sm-offset-8 col-md-offset-0'>
                     <h3 class='price-color sm-txtr mar-sm-t0'></h3>
                     <!--<button class='btn btn-primary btn-block' onclick='functionviewslot($idground)';>View Slots</button>-->
-                    <a href="#/view-slots" ng-click="viewSlots(detail)" class="btn btn-primary btn-block">View Slots</a>
+                    <a ng-click="viewSlots(detail)" class="btn btn-primary btn-block">View Slots</a>
                 </div>
             </div>
+            <div class='primary-box clearfix pad-t15 brd-btm'
+                 ng-hide="checkIfSlotBelongsToGround(slots.sportsGroundId,detail.SportsGroundID)">
+                <div role='form' class='col-sm-9 col-md-10 pad0'>
+                    <div class='form-group col-sm-2 col-xs-4' ng-repeat="slot in slots.slots">
+                        <label class='control-label dblock font12 clearfix'><span
+                                class='pull-left'>{{slot.startTime}}</span><span
+                                class='pull-right'>{{slot.endTime}}</span></label>
+                        <button type='button' ng-click="slotSelectionAction(slot)" ng-class="buttonStyle(slot)">
+                            {{slot.displayText}}
+                        </button>
+                    </div>
 
+                </div>
+                <div class='col-sm-3 col-md-2' ng-hide="selectionCount()==0">
+                    <div class='txtr font12'>
+                        <p class='base-price'>Base Amt : <span class='pad-l5 secondary-color price-block'>{{bookingSummary.baseAmt}}</span>
+                        </p>
+
+                        <p>Booking Amt: <span
+                                class='pad-l5 secondary-color price-block'>{{bookingSummary.baseAmt}}</span></p>
+
+                        <p>Service Tax : <span
+                                class='pad-l5 secondary-color price-block'>{{bookingSummary.bookingAmt}}</span></p>
+
+                        <p>Online fees : <span
+                                class='pad-l5 secondary-color price-block'>{{bookingSummary.onlineFees}}</span></p>
+
+                        <p class='font14-sm'>Total Amt : <span class='pad-l5 secondary-color price-block'>{{bookingSummary.totalAmount}}</span>
+                        </p>
+                        <a href="#/checkout-summary" ng-click="checkoutSummary()"
+                           class="btn btn-primary btn-block pad-l5 mar-b15 price-block">Continue</a>
+                    </div>
+                </div>
+            </div>
 
         </div>
 

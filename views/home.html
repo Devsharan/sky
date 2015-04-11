@@ -36,7 +36,7 @@
                             <!-- // <select class="form-control" name='idlocation' id='idlocation' ng-model="searchRequest[location.City]">
                                //   <option  ng-repeat="location in sports" value=location.City>{{location.City}}</option>
                              // </select>-->
-                            <select  class="form-control" ng-options="location.City for location in sports" ng-model="searchRequest.location">
+                            <select  class="form-control" ng-options=" City for City in searchPanel.locations" ng-model="searchRequest.location">
                                 <option value="">Choose Your Location</option>
                             </select>
 
@@ -47,26 +47,26 @@
                                  <option  ng-repeat="sport in sports" value=sport.Sport>{{sport.Sport}}</option>
                              </select>-->
 
-                            <select  class="form-control" ng-options="sport.Sport for sport in sports" ng-model="searchRequest.sportsName">
+                            <select  class="form-control" ng-options="Sport for Sport in searchPanel.sports" ng-model="searchRequest.sportsName">
                                 <option value="">Choose Your Sport</option>
                             </select>
                         </div>
 
 
-                        <div class="form-group" ng-controller="DatepickerDemoCtrl">
+                        <div class="form-group">
                             <label class="sr-only">Choose Date</label>
 
 
                             <div class="pos-rel">
 
-                                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="searchRequest.date"
-                                       is-open="opened" min-date="minDate" max-date="'2015-06-22'"
-                                       datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
-                                           ng-required="true" close-text="Close"/>
-                                      <span class="date date-home">
-                                        <button type="input-group-addon"  ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                                      </span>
+                                <input type="text" id="searchDate" class="form-control" ng-model="searchRequest.date" datepicker/>
 
+                                <!--  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="searchRequest.date"
+                                        is-open="opened" min-date="minDate" max-date="'2015-06-22'"
+                                        datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                       close-text="Close"/>
+                                       <span class="date date-home" ng-click="open($event)">  </span>
+ -->
                             </div>
 
                         </div>

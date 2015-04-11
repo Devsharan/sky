@@ -16,12 +16,11 @@
     <link href="css/main.css" rel="stylesheet">
     <script type="text/javascript" src="js/angular.js"></script>
     <script type="text/javascript" src="js/angular-route.js"></script>
-    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.js"></script>
     <script type="text/javascript" src="js/angular-uuid2.js"></script>
     <script type="text/javascript">
 
-        var bygApp = angular.module("bygApp", ["ngRoute", "ui.bootstrap","angularUUID2"])
-                .constant("baseUrl", "http://localhost/sports-grounds")
+        var bygApp = angular.module("bygApp", ["ngRoute", "angularUUID2"])
+                .constant("baseUrl", "http://localhost")
                 .config(function ($routeProvider) {
                     $routeProvider.when("/contact-us", {
                         templateUrl: "views/contact-us.html"
@@ -63,16 +62,16 @@
                     });
                 });
 
-        bygApp.service('initHome', function ($http) {
+        bygApp.service('initHome', function ($http,baseUrl) {
             this.getCityAndLocation = function () {
-                return $http.get("http://localhost/sports-grounds").success(function (data) {
+                return $http.get(baseUrl+"/sports-grounds").success(function (data) {
                     console.log(data);
                     return data;
                 });
                 this.getGroundDetails = function ($date, $sportsName, $location) {
                     return $http.get(
                             {
-                                url: "http://localhost/sports-grounds/search",
+                                url: baseUrl+"/sports-grounds/search",
                                 method: "GET",
                                 params: {sportsName: $sportsName, date: $date, location: $location}
                             }
@@ -84,14 +83,40 @@
             };
         });
 
+        bygApp.directive("datepicker", function () {
+            return {
+                restrict: "A",
+                require: "ngModel",
+                link: function (scope, elem, attrs, controller) {
+                    var updateModel = function (dateText) {
+                        scope.$apply(function () {
+                            controller.$setViewValue(dateText);
+                        });
+                    };
+                    var options = {
+                        dateFormat: "dd/mm/yy",
+                        onSelect: function (dateText) {
+                            updateModel(dateText);
+                        }
+                    };
+                    $(elem).datepicker(options);
+                }
+            }
+        });
 
-        bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uuid2) {
+        bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uuid2,baseUrl) {
 
+                    $scope.dateOptions = {
+                        changeYear: true,
+                        changeMonth: true,
+                        yearRange: '1900:-0'
+                    };
+                    var baseUrl=baseUrl;
                     $scope.userSessionId = uuid2.newguid();
                     $scope.searchRequest = {};
                     $scope.groundDetails;
                     $scope.createBookingRequest = { sportsGroundId:"",bookingType:"ONLINE",webIp:"",webSessionId:"", date:"",slot:"" }
-                    $scope.slots;
+                    $scope.slots = {sportsGroundId:"",slots:[]};
                     $scope.bookingSummary = {baseAmt:0,bookingAmt:0,serviceTax:0,onlineFees:15,totalAmount:""};
                     $scope.userDetails ={userId:"",name:"",email:"",phoneNumber:""};
                     $scope.userBookingId ="";
@@ -103,7 +128,7 @@
                     initHome.getCityAndLocation().then(function (result) {
                         $scope.sports = result.data;
 
-                       /* function uniqueCollection(collection,keyName) {
+                        function uniqueCollection(collection,keyName) {
                             var output = [],
                                     keys = [];
 
@@ -118,9 +143,9 @@
                         }
 
                         $scope.searchPanel.sports = uniqueCollection(result.data,"Sport");
-                        $scope.searchPanel.location = uniqueCollection(result.data,"City");
-                        $scope.searchPanel.selectedLocation = "Bangaluru";
-                        $scope.searchPanel.selectedSports = "Football";*/
+                        $scope.searchPanel.locations = uniqueCollection(result.data,"City");
+                        //$scope.searchPanel.selectedLocation = "Bangaluru";
+                        //$scope.searchPanel.selectedSports = "Football";
 
 
                     });
@@ -129,14 +154,14 @@
 
                     $scope.viewGroundDetails = function (initHome) {
                         var date = $filter('date')($scope.searchRequest.date, 'yyyy-MM-dd');
-                        var location = $scope.searchRequest.location.City;
-                        var sportsName = $scope.searchRequest.sportsName.Sport;
+                        var location = $scope.searchRequest.location;
+                        var sportsName = $scope.searchRequest.sportsName;
                         console.log(date)
                         console.log(location)
                         console.log(sportsName)
                         $http(
                                 {
-                                    url: "http://localhost/sports-grounds/search",
+                                    url: baseUrl+"/sports-grounds/search",
                                     method: "GET",
                                     params: {sportsName: sportsName, date: date, location: location}
                                 }
@@ -163,7 +188,7 @@
                         $scope.searchRequest.date = date;
                         return $http(
                                 {
-                                    url: "http://localhost/sports-grounds/" + $selectedGround.SportsGroundID,
+                                    url: baseUrl+"/sports-grounds/" + $selectedGround.SportsGroundID,
                                     method: "GET",
                                     params: {date: date}
                                 }
@@ -199,40 +224,59 @@
                                         })
                                         return isBooked;
                                     }
+                                    function getSportsGroundId() {
+                                        var sportsGroundId;
+                                        angular.forEach(result.data, function (bookedSlot) {
+                                            sportsGroundId =  bookedSlot.SportsGroundID;
+                                        })
 
-                                    var slots  = [];
+                                        return sportsGroundId;
+
+
+                                    }
+
                                     var slot = {startTime:"",endTime:"",rate:"",displayText:"",status:"",selected:false};
 
-                                    for(var i=Number(firstSlot);i<=Number(lastSlot);i++) {
-                                        if(!isBooked(String(i))){
+                                    $scope.slots.sportsGroundId = "";
+                                    $scope.slots.slots= [];
+                                    if(result.data.length!=0){
+                                        for(var i=Number(firstSlot);i<=Number(lastSlot);i++) {
                                             var intermediateSlot = angular.copy(slot);
                                             intermediateSlot.startTime = String(i).concat(":00");
                                             intermediateSlot.endTime   = String(i+Number(slotDuration)).concat(":00");
                                             intermediateSlot.rate = "800";
                                             intermediateSlot.displayText = "Rs.800";
-                                            intermediateSlot.status = "Available";
+                                            intermediateSlot.status = isBooked(String(i)) ? "Booked":"Available";
                                             intermediateSlot.slot = String(i);
                                             intermediateSlot.selected=false;
-                                            slots.push(intermediateSlot);
+                                            $scope.slots.slots.push(intermediateSlot);
                                         }
-
+                                        $scope.slots.sportsGroundId =getSportsGroundId();
                                     }
-                                    $scope.slots = slots;
                                     console.log($scope.slots)
                                 });
                         ;
 
                     };
+                    $scope.checkIfSlotBelongsToGround= function($slotGroundId,$sportsGroundId){
+                        if($slotGroundId === $sportsGroundId){
+                            return false;
+                        }
+                        else{
+                            return true;
+                        }
 
+
+                    }
                     $scope.buttonStyle = function (slot) {
-                        var slotButtonClass;
+                        var slotButtonClass ="btn btn-primary btn-block";
                         //  var slot = $scope.currentSelectedSlot ===undefined ? $slot: $scope.currentSelectedSlot;
                         if ((slot.status === "Available") && (slot.selected === true)) {
-                            slotButtonClass = "slot ".concat("slot-selected");
+                            slotButtonClass = "btn btn-success btn-block";
                         } else if (slot.status === "Available") {
-                            slotButtonClass = "slot ".concat("slot-available");
+                            slotButtonClass = "btn btn-info btn-block";
                         } else if (slot.status !== "Available") {
-                            slotButtonClass = "slot ".concat("slot-booked");
+                            slotButtonClass = "btn btn-default  btn-block disabled";
                             slot.displayText = slot.status;
 
                         }
@@ -246,7 +290,7 @@
 
                         $http(
                                 {
-                                    url: "http://localhost/bookings/"+$scope.userBookingId,
+                                    url: baseUrl+"/bookings/"+$scope.userBookingId,
                                     method: "PUT",
                                     data: bookingConfirmationRequest,
                                     headers: {
@@ -285,7 +329,7 @@
                                     bookingRequest.slot = slot.slot;
                                     $http(
                                             {
-                                                url: "http://localhost/sports-grounds/"+$scope.selectedGround.SportsGroundID+"/slots/"+slot.slot,
+                                                url: baseUrl+"/sports-grounds/"+$scope.selectedGround.SportsGroundID+"/slots/"+slot.slot,
                                                 method: "POST",
                                                 data: bookingRequest,
                                                 headers: {
@@ -310,7 +354,7 @@
                                     addSlotRequest.date =  $scope.searchRequest.date;
                                     $http(
                                             {
-                                                url: "http://localhost//bookings/"+addSlotRequest.bookingId+"/slots",
+                                                url: baseUrl+"/bookings/"+addSlotRequest.bookingId+"/slots",
                                                 method: "PUT",
                                                 data: addSlotRequest,
                                                 headers: {
@@ -337,7 +381,7 @@
                                 removeSlotRequest.date =  $scope.searchRequest.date;
                                 $http(
                                         {
-                                            url: "http://localhost//bookings/"+removeSlotRequest.bookingId+"/slots/"+removeSlotRequest.slot,
+                                            url: baseUrl+"/bookings/"+removeSlotRequest.bookingId+"/slots/"+removeSlotRequest.slot,
                                             method: "DELETE",
                                             data: removeSlotRequest,
                                             headers: {
@@ -370,7 +414,7 @@
 
                     $scope.selectionCount = function () {
                         var count = 0;
-                        angular.forEach($scope.slots, function (slot) {
+                        angular.forEach($scope.slots.slots, function (slot) {
                             if (slot.selected == true) {
                                 count++;
                             }
@@ -381,61 +425,85 @@
                         console.log($scope.searchRequest.date)
 
                     }
-                    $scope.resetSession = function(){
 
+                    $scope.resetSession = function(){
+                        //remove all slot from booking
+
+                        angular.forEach($scope.slots.slots, function (slot) {
+                            if (slot.selected == true) {
+
+                                $http(
+                                        {
+                                            url: baseUrl+"/bookings/"+$scope.userBookingId+"/slots/"+slot.slot,
+                                            method: "PUT",
+                                            data: {date:$scope.searchRequest.date},
+                                            headers: {
+                                                'Content-Type': 'application/json; charset=utf-8'
+                                            }
+
+                                        }
+                                ).success(function (data) {
+                                            console.log(data);
+                                            return data;
+                                        }
+                                ).then(function (result) {
+                                            console.log("calcelled slot  against bokking -->".concat($scope.userBookingId).concat(" and slot ").concat(slot.slot).concat("--->").concat(result.data));
+                                        }
+                                );
+                            }
+                        });
+
+                        $scope.groundDetails = [];
+                        $scope.slots = {sportsGroundId:"",slots:[]};
+                        $scope.bookingSummary = {baseAmt:0,bookingAmt:0,serviceTax:0,onlineFees:15,totalAmount:""};
                     }
 
                 }
         );
 
-        bygApp.controller('DatepickerDemoCtrl', function ($scope) {
-            $scope.today = function () {
-                $scope.dt = new Date();
-            };
-            $scope.today();
+        /*  bygApp.controller('DatepickerDemoCtrl', function ($scope) {
+         $scope.today = function () {
+         $scope.dt = new Date();
+         };
+         $scope.today();
 
-            $scope.clear = function () {
-                $scope.dt = null;
-            };
+         $scope.clear = function () {
+         $scope.dt = null;
+         };
 
-            // Disable weekend selection
-            $scope.disabled = function (date, mode) {
-                return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-            };
+         // Disable weekend selection
+         $scope.disabled = function (date, mode) {
+         return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+         };
 
-            $scope.toggleMin = function () {
-                $scope.minDate = $scope.minDate ? null : new Date();
-            };
-            $scope.toggleMin();
+         $scope.toggleMin = function () {
+         $scope.minDate = $scope.minDate ? null : new Date();
+         };
+         $scope.toggleMin();
 
-            $scope.open = function ($event) {
-                $event.preventDefault();
-                $event.stopPropagation();
+         $scope.open = function ($event) {
+         $event.preventDefault();
+         $event.stopPropagation();
 
-                $scope.opened = true;
-            };
+         $scope.opened = true;
+         };
 
-            $scope.dateOptions = {
-                formatYear: 'yy',
-                startingDay: 1
-            };
+         $scope.dateOptions = {
+         formatYear: 'yy',
+         startingDay: 1
+         };
 
-            $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-            $scope.format = $scope.formats[0];
-        });
-
+         $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+         $scope.format = $scope.formats[0];
+         });
+         */
 
     </script>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>-->
     <script>
 
     </script>
