@@ -80,7 +80,29 @@ function searchSportsGrounds()
 function getSportsGroundSlots($groundId)
 {
     $date = isset($_GET["date"]) ? $_GET["date"] : date("Y-d-m");
+    $groundSlots =  getGroundSlots($groundId,$date);
+    $slotRates = getSlotsEffectiveRate($groundId,$date);
 
+    $map = array();
+    foreach ($slotRates as $value) {
+        $map[$value->Slot] = $value;
+    }
+    foreach ($groundSlots as $slot){
+        $slot->rate= $map[$slot->Slot]->Rate;
+    }
+    $res = new stdClass();
+    $res->bookedSlots = $groundSlots;
+    $res->allRates= $slotRates;
+
+    echo json_encode($res);
+ }
+
+/**
+ * @return array
+ */
+function getGroundSlots($groundId,$date)
+{
+    $results = [];
     try {
         $dbCon = getBygConnection();
         $sql = 'CALL GetSportsGroundBookings(?,?)';
@@ -94,10 +116,34 @@ function getSportsGroundSlots($groundId)
 
         $stmt->closeCursor();
         $dbCon = null;
-        echo json_encode($results);
+        //echo json_encode($results);
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
+    return $results;
+}
+
+function getSlotsEffectiveRate($groundId,$date)
+{
+    $results = [];
+    try {
+        $dbCon = getBygConnection();
+        $sql = 'CALL GetEffectiveRatesForGroundOnADay(?,?)';
+        $stmt = $dbCon->prepare($sql);
+
+        $stmt->bindParam(1, $groundId);
+
+        $stmt->bindParam(2, $date);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        $stmt->closeCursor();
+        $dbCon = null;
+        //echo json_encode($results);
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+    return $results;
 }
 
 function createBooking($groundId, $slotId)
