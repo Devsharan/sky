@@ -1,8 +1,10 @@
-/**
- * Created by root on 13/4/15.
- */
+
 var bygApp = angular.module("bygApp", ["ngRoute", "angularUUID2"])
     .constant("baseUrl", "http://localhost")
+    .config(function($locationProvider) {
+        $locationProvider.html5Mode(false);
+    })
+
     .config(function ($routeProvider) {
         $routeProvider.when("/contact-us", {
             templateUrl: "views/contact-us.html"
@@ -37,13 +39,10 @@ var bygApp = angular.module("bygApp", ["ngRoute", "angularUUID2"])
         $routeProvider.when("/thank-you", {
             templateUrl: "views/thank-you.html"
         });
-
-
         $routeProvider.otherwise({
             templateUrl: "views/home.html"
         });
-    });
-
+    })
 bygApp.service('initHome', function ($http,baseUrl) {
     this.getCityAndLocation = function () {
         return $http.get(baseUrl+"/sports-grounds").success(function (data) {
@@ -92,8 +91,39 @@ bygApp.directive("datepicker", function () {
         }
     }
 });
+bygApp.controller("thankYouCntlr", function ($scope, $http,$location,baseUrl) {
 
-bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uuid2,baseUrl) {
+    $scope.paymentId = $location.search()['payment_id'];
+    $scope.status = $location.search()['status'];
+    console.log("paymentId---->".concat($scope.paymentId));
+    console.log($scope.status);
+    console.log($location.path());
+    $http(
+        {
+            url: baseUrl+"/bookings/"+$scope.paymentId,
+            method: "POST",
+            data: {},
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }
+    ).success(function (data) {
+            console.log(data);
+            return data;
+        }
+    ).then(function (result) {
+            $scope.bygPaymentId = result.data.paymentId;
+        }
+    );
+
+    $scope.printInvoice = function(){
+
+    }
+
+
+});
+
+bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uuid2,baseUrl,$window,$location) {
 
         $scope.dateOptions = {
             changeYear: false,
@@ -150,6 +180,7 @@ bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uui
 
         $scope.viewGroundDetails = function (initHome) {
             $scope.resetSession();
+
             var date = $filter('date')($scope.searchRequest.date, 'yyyy-MM-dd');
             var location = $scope.searchRequest.location;
             var sportsName = $scope.searchRequest.sportsName;
@@ -326,7 +357,9 @@ bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uui
         }
         $scope.confirmBooking = function(){
 
-            var bookingConfirmationRequest  = {bookingType:"ONLINE",userName:$scope.userDetails.name,userEmail:$scope.userDetails.email,phoneNumber:$scope.userDetails.phoneNumber};
+
+            var bookingConfirmationRequest  = {bookingType:"ONLINE",userName:$scope.userDetails.name,userEmail:$scope.userDetails.email,phoneNumber:$scope.userDetails.phoneNumber,
+                bookingAmount:$scope.bookingSummary.bookingAmt,totalAmount:$scope.bookingSummary.bookingAmt,paymentFee:$scope.bookingSummary.onlineFees};
 
 
             $http(
@@ -343,12 +376,21 @@ bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uui
                     return data;
                 }
             ).then(function (result) {
-                    $scope.userId = result.data.success;
+                    $scope.userId = result.data.userId;
                     console.log( $scope.userId);
+                    console.log("confirm booking");
+                    $scope.userBookingId="";
+                    $paymentUrl = "https://www.instamojo.com/bookyourground/online-paymen/?data_name="
+                        .concat($scope.userDetails.name).concat("&data_amount=").concat($scope.bookingSummary.totalAmount)
+                        .concat("&data_email=").concat($scope.userDetails.email).concat("&data_phone=").concat($scope.userDetails.phoneNumber).concat("&data_Field_42719=")
+                        .concat(result.data.invoiceNumber).concat("&data_Field_44766=").concat(result.data.userId).concat("&intent=buy");
+                    console.log($paymentUrl);
+
+                    $window.location.href = $paymentUrl;
                 }
             );
-            console.log("confirm booking");
-            $scope.userBookingId="";
+
+
             //create user based on user information and confirm booking
 
         }
@@ -544,4 +586,3 @@ bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uui
  $scope.format = $scope.formats[0];
  });
  */
-

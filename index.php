@@ -26,6 +26,7 @@ $app->get('/sports-grounds', 'getAllSportsAndLocations');
 $app->get('/sports-grounds/search', 'searchSportsGrounds');
 $app->get('/sports-grounds/:groundId', 'getSportsGroundSlots');
 $app->post('/sports-grounds/:groundId/slots/:slotId', 'createBooking');
+$app->post('/bookings/:paymentId', 'confirmPayment');
 $app->put('/bookings/:bookingId/slots', 'addSlotToBooking');
 $app->put('/bookings/:bookingId/slots/:slotId', 'cancelSlotFromBooking');
 $app->put('/bookings/:bookingId', 'confirmBooking');
@@ -47,6 +48,87 @@ function getAllSportsAndLocations()
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
 
+}
+
+function confirmPayment($paymentId)
+{
+
+    $paymentDetail = retrievePaymentDetails($paymentId);
+
+    $request = new stdClass();
+    if ($paymentDetail->success) {
+        $request->paymentStatus = "SUCCESS";
+    } else {
+        $request->paymentStatus = "FAILURE";
+    }
+
+    $request->invoiceId = $paymentDetail->payment->custom_fields->Field_42719->value;
+    $request->userId = $paymentDetail->payment->custom_fields->Field_44766->value;
+    $request->paymentId = $paymentDetail->payment->payment_id;
+    //echo json_encode($request);
+    createPayment($request);
+
+}
+
+/**
+ * @param $paymentId
+ * @return mixed
+ */
+function retrievePaymentDetails($paymentId)
+{
+    $url = "https://www.instamojo.com/api/1.1/payments/" . $paymentId;
+
+    $headers = array(
+        'http' => array(
+            'method' => "GET",
+            'header' => "X-Api-Key: " . 'f6b5704c42c1f1ad44467d4eed08371f' . "\r\n" .
+                "X-Auth-Token: " . 'b5f158db16f50f7fe9094fc4904e163a'
+
+        )
+    );
+
+// Creates a stream context
+    $context = stream_context_create($headers);
+
+// Open the URL with the HTTP headers (fopen wrappers must be enabled)
+    $response = file_get_contents($url, false, $context);
+    //echo $response;
+
+    $json = json_decode($response);
+    return $json;
+}
+
+
+function createPayment($request)
+{
+    global $app;
+    try {
+        $dbCon = getBygConnection();
+
+        $sql = 'CALL Create_Payment(?,?,?,?,@paymentId)';
+        $stmt = $dbCon->prepare($sql);
+
+        $stmt->bindParam(1, $request->invoiceId);
+        $stmt->bindParam(2, $request->userId);
+        $stmt->bindParam(3, $request->paymentId);
+        $stmt->bindParam(4, $request->paymentStatus);
+        $stmt->execute();
+
+        $resultSet = $dbCon->query("SELECT @paymentId")->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        $dbCon = null;
+
+        $res = new stdClass();
+        $res->paymentId = $resultSet['@paymentId'];
+
+        $app->response()->header('Content-Type', 'application/json');
+        $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+        echo json_encode($res);
+
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
 }
 
 function searchSportsGrounds()
@@ -80,27 +162,27 @@ function searchSportsGrounds()
 function getSportsGroundSlots($groundId)
 {
     $date = isset($_GET["date"]) ? $_GET["date"] : date("Y-d-m");
-    $groundSlots =  getGroundSlots($groundId,$date);
-    $slotRates = getSlotsEffectiveRate($groundId,$date);
+    $groundSlots = getGroundSlots($groundId, $date);
+    $slotRates = getSlotsEffectiveRate($groundId, $date);
 
     $map = array();
     foreach ($slotRates as $value) {
         $map[$value->Slot] = $value;
     }
-    foreach ($groundSlots as $slot){
-        $slot->rate= $map[$slot->Slot]->Rate;
+    foreach ($groundSlots as $slot) {
+        $slot->rate = $map[$slot->Slot]->Rate;
     }
     $res = new stdClass();
     $res->bookedSlots = $groundSlots;
-    $res->allRates= $slotRates;
+    $res->allRates = $slotRates;
 
     echo json_encode($res);
- }
+}
 
 /**
  * @return array
  */
-function getGroundSlots($groundId,$date)
+function getGroundSlots($groundId, $date)
 {
     $results = [];
     try {
@@ -123,7 +205,7 @@ function getGroundSlots($groundId,$date)
     return $results;
 }
 
-function getSlotsEffectiveRate($groundId,$date)
+function getSlotsEffectiveRate($groundId, $date)
 {
     $results = [];
     try {
@@ -215,7 +297,7 @@ function addSlotToBooking($bookingId)
 function cancelSlotFromBooking($bookingId, $slotId)
 {
 
-     global $app;
+    global $app;
     $request = $app->request(); // Getting parameter with names
     $body = $request->getBody();
     $input = json_decode($body);
@@ -234,7 +316,7 @@ function cancelSlotFromBooking($bookingId, $slotId)
         $stmt->closeCursor();
         $dbCon = null;
         $app->response()->header('Content-Type', 'application/json');
-         $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+        $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
         $res = new stdClass();
         $res->success = "success";
@@ -244,6 +326,7 @@ function cancelSlotFromBooking($bookingId, $slotId)
     }
 
 }
+
 function removeSlotFromBooking($bookingId, $slotId)
 {
     global $app;
@@ -275,9 +358,13 @@ function removeSlotFromBooking($bookingId, $slotId)
     }
 
 }
+
 //IN inBookingID INTEGER,
 //IN inBookingType ENUM('ONLINE', 'ADMIN'),IN inUserName VARCHAR(45),IN inUserEmail VARCHAR(45),IN inPhoneNumber VARCHAR(45),OUT OutUserID INT(11)
-
+//IN inBookingID INTEGER,
+ //IN inBookingType ENUM('ONLINE', 'ADMIN'),IN inUserName VARCHAR(45),IN inUserEmail VARCHAR(45),IN inPhoneNumber VARCHAR(45),
+//IN inbookingAmt DECIMAL(12,2),IN inTotalAmount DECIMAL(12,2),IN inPaymentFee DECIMAL(12,2),
+//OUT OutUserID INT(11),OUT outInvoiceNumber VARCHAR(64))
 function confirmBooking($bookingId)
 {
     global $app;
@@ -288,7 +375,7 @@ function confirmBooking($bookingId)
     try {
         $dbCon = getBygConnection();
 
-        $sql = 'CALL Booking_ConfirmBookingWithUser(?,?,?,?,?,@userId)';
+        $sql = 'CALL Booking_ConfirmBookingWithUser(?,?,?,?,?,?,?,?,@userId,@invoiceNumber)';
         $stmt = $dbCon->prepare($sql);
 
         $stmt->bindParam(1, $bookingId);
@@ -296,8 +383,13 @@ function confirmBooking($bookingId)
         $stmt->bindParam(3, $input->userName);
         $stmt->bindParam(4, $input->userEmail);
         $stmt->bindParam(5, $input->phoneNumber);
+        $stmt->bindParam(6, $input->bookingAmount);
+        $stmt->bindParam(7, $input->totalAmount);
+        $stmt->bindParam(8, $input->paymentFee);
+
         $stmt->execute();
-        $resultSet = $dbCon->query("SELECT @userId")->fetch(PDO::FETCH_ASSOC);
+        $userIds = $dbCon->query("SELECT @userId")->fetch(PDO::FETCH_ASSOC);
+        $invoiceNumber = $dbCon->query("SELECT @invoiceNumber")->fetch(PDO::FETCH_ASSOC);
 
         $stmt->closeCursor();
         $dbCon = null;
@@ -305,14 +397,15 @@ function confirmBooking($bookingId)
         $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
         $res = new stdClass();
-        $res->success = $resultSet['@userId'];
+        $res->userId = $userIds['@userId'];
+        $res->invoiceNumber = $invoiceNumber['@invoiceNumber'];
+
         echo json_encode($res);
 
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
 }
-
 
 
 function getUsers()

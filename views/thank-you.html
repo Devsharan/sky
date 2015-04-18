@@ -1,4 +1,4 @@
-<div class="container mar-t30 mh500">
+<div class="container mar-t30 mh500" ng-controller="thankYouCntlr">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="secondary-box clearfix mh-md-375">
@@ -7,48 +7,44 @@
                 </div>
                 <div class="clearfix pad-sm-t20 hpad-xs-20">
                     <div class="txtc brd-btm pad-b15">
-                        <img src="img/smile_icon.png" class="pad-t20" />
+                        <img src="img/smile_icon.png" class="pad-t20"/>
+
                         <h1 class="primary-title">Thank you for booking the ground!</h1>
                     </div>
                     <form class="form-horizontal pad-t20" role="form">
                         <div class="form-group mar-sm-b0">
-                            <label class="col-sm-4 control-label">Ground Name -</label>
+                            <label class="col-sm-4 control-label">Payment Reference Number -</label>
+
                             <div class="col-sm-8">
-                                <p class="form-control-static font14-sm">{{selectedGround.ShortName}}</p>
+                                <p class="form-control-static font14-sm">{{paymentId}}</p>
                             </div>
                         </div>
 
                         <div class="form-group mar-sm-b0">
-                            <label class="col-sm-4 control-label">Address -</label>
-                            <div class="col-sm-8">
-                                <p class="form-control-static font14-sm">{{selectedGround.FullName}}</p>
-                            </div>
-                        </div>
+                            <label class="col-sm-4 control-label">BYG Reference Number -</label>
 
-                        <div class="form-group mar-sm-b0">
-                            <label class="col-sm-4 control-label">Booked Date -</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static font14-sm">{{searchRequest.date}}</p>
-                            </div>
-                        </div>
-
-                        <div class="form-group mar-sm-b0">
-                            <label class="col-sm-4 control-label">Timings -</label>
-                            <div class="col-sm-8">
-                                <p class="form-control-static font14-sm"></p>
+                                <p class="form-control-static font14-sm">{{bygPaymentId}}</p>
                             </div>
                         </div>
                         <div class="form-group mar-sm-b0">
-                            <label class="col-sm-4 control-label">Total Hours -</label>
+                            <label class="col-sm-4 control-label">Payment Status -</label>
+
                             <div class="col-sm-8">
-                                <p class="form-control-static font14-sm"> hours</p>
+                                <p class="form-control-static font14-sm">{{status}}</p>
                             </div>
                         </div>
-
 
                     </form>
+
                 </div>
+                <div class="txtc brd-btm pad-b15">
+                    <a href="#/" class="btn btn-primary">Another Booking</a>
+                    <a href="#/" ng-click="printInvoice()" class="btn btn-default mar-l10">Print Invoice</a>
+                </div>
+
             </div>
         </div>
     </div>
+
 </div>
