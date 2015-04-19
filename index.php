@@ -52,7 +52,7 @@ function getAllSportsAndLocations()
 
 function confirmPayment($paymentId)
 {
-
+    global $app;
     $paymentDetail = retrievePaymentDetails($paymentId);
 
     $request = new stdClass();
@@ -66,9 +66,116 @@ function confirmPayment($paymentId)
     $request->userId = $paymentDetail->payment->custom_fields->Field_44766->value;
     $request->paymentId = $paymentDetail->payment->payment_id;
     //echo json_encode($request);
-    createPayment($request);
+    $paymentId = createPayment($request);
+    //send SMS and Email (invoice id)
+    $invoiceDetails = retrieveInvoiceDetail( $request->invoiceId );
+    $invoiceDetails->invoiceNumber= $request->invoiceId ;
+    sendSMS($invoiceDetails);
+    sendEmail($invoiceDetails);
+
+    $app->response()->header('Content-Type', 'application/json');
+    $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+    echo json_encode($paymentId);
 
 }
+
+function sendSMS($invoiceDetail){
+
+    $xml_data = '<?xml version="1.0"?><smslist><sms><user>ground</user><password>123456</password>
+<message>BookYourGround BookingID '
+        .$invoiceDetail->invoiceNumber . '. Time '
+        .$invoiceDetail->playDate .' for '
+        .$invoiceDetail->groundSport . ' on '
+        .$invoiceDetail->playDate . ' at '
+        .$invoiceDetail->groundName .'.Balance to be paid:'
+        .$invoiceDetail->bookingSummary->bookingAmt . '+Tax Support +91-8095 887000</message>
+<mobiles>' . $invoiceDetail->userDetail->phoneNumber . '</mobiles>
+<senderid>BKGRND</senderid>
+</sms></smslist>';
+
+    echo $xml_data;
+    $URL = "http://sms.jootoor.com/sendsms.jsp?";
+
+    $ch = curl_init($URL);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml'));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $output = curl_exec($ch);
+    curl_close($ch);
+}
+function sendEmail($invoiceDetail){
+
+    $message = "<table>
+                   <tr>
+                       <td>Ground Name</td>
+                       <td>".$invoiceDetail->groundName."</td>
+                    </tr>
+                    <tr>
+                       <td>Address</td>
+                       <td>".$invoiceDetail->groundAddress."</td>
+                    </tr>
+                    <tr>
+                       <td>Booked Date</td>
+                       <td>".$invoiceDetail->playDate."</td>
+                    </tr>
+                    <tr>
+                       <td>Timings</td>
+                       <td>".$invoiceDetail->groundName."</td>
+                    </tr>
+                    <tr>
+                       <td>Booked By</td>
+                       <td>".$invoiceDetail->userDetail->name."</td>
+                    </tr>
+                    <tr>
+                       <td>Contact No</td>
+                       <td>".$invoiceDetail->userDetail->phoneNumber."</td>
+                    </tr>";
+    $to =  $invoiceDetail->userDetail->email;
+    $subject = "Play ground booking confirmation-".$invoiceDetail->invoiceNumber;
+// Always set content-type when sending HTML email
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+// More headers
+    $headers .= 'From:support@bookyourground.com' . "\r\n";
+    $headers .= 'Cc:erakesh.smile@gmail.com' . "\r\n";
+    $res = mail($to,$subject,$message,$headers);
+
+}
+
+
+
+function retrieveInvoiceDetail($invoiceNumber)
+{
+    $result = new stdClass();
+    try {
+        $dbCon = getBygConnection();
+
+        $sql = 'select InvoiceDetail from Invoice where InvoiceNumber =?';
+        $stmt = $dbCon->prepare($sql);
+
+        $stmt->bindParam(1, $invoiceNumber);
+
+        $stmt->execute();
+
+        $resultSet = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $dbCon = null;
+        if(!empty($resultSet)) {
+            $result=  json_decode($resultSet['InvoiceDetail']);
+        }
+
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+    return $result;
+}
+
+
 
 /**
  * @param $paymentId
@@ -101,7 +208,6 @@ function retrievePaymentDetails($paymentId)
 
 function createPayment($request)
 {
-    global $app;
     try {
         $dbCon = getBygConnection();
 
@@ -121,10 +227,7 @@ function createPayment($request)
         $res = new stdClass();
         $res->paymentId = $resultSet['@paymentId'];
 
-        $app->response()->header('Content-Type', 'application/json');
-        $app->response()->header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-
-        echo json_encode($res);
+        return $res;
 
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
@@ -375,7 +478,7 @@ function confirmBooking($bookingId)
     try {
         $dbCon = getBygConnection();
 
-        $sql = 'CALL Booking_ConfirmBookingWithUser(?,?,?,?,?,?,?,?,@userId,@invoiceNumber)';
+        $sql = 'CALL Booking_ConfirmBookingWithUser(?,?,?,?,?,?,?,?,?,@userId,@invoiceNumber)';
         $stmt = $dbCon->prepare($sql);
 
         $stmt->bindParam(1, $bookingId);
@@ -386,6 +489,8 @@ function confirmBooking($bookingId)
         $stmt->bindParam(6, $input->bookingAmount);
         $stmt->bindParam(7, $input->totalAmount);
         $stmt->bindParam(8, $input->paymentFee);
+        $stmt->bindValue(9, json_encode($input->invoiceDetails));
+
 
         $stmt->execute();
         $userIds = $dbCon->query("SELECT @userId")->fetch(PDO::FETCH_ASSOC);

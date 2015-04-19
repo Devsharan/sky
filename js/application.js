@@ -149,6 +149,7 @@ bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uui
         $scope.searchPanel = {location:[], sports:[],selectedLocation:"Bangalore",selectedSports:"",selectedDate:""};
         $scope.numberOfSlotSelected = 0;
         $scope.numberOfBookedHours = 0;
+
         console.log($scope.userSessionId);
 
         initHome.getCityAndLocation().then(function (result) {
@@ -358,8 +359,12 @@ bygApp.controller("bygMainCntlr", function ($scope, $http, initHome, $filter,uui
         $scope.confirmBooking = function(){
 
 
+            var invoiceDetails  = {groundName:$scope.selectedGround.ShortName,groundAddress:$scope.selectedGround.FullName,
+                groundSport:$scope.selectedGround.Sport,playDate: $scope.searchRequest.date,userDetail:$scope.userDetails, bookingSummary:$scope.bookingSummary};
+            console.log(invoiceDetails);
+
             var bookingConfirmationRequest  = {bookingType:"ONLINE",userName:$scope.userDetails.name,userEmail:$scope.userDetails.email,phoneNumber:$scope.userDetails.phoneNumber,
-                bookingAmount:$scope.bookingSummary.bookingAmt,totalAmount:$scope.bookingSummary.bookingAmt,paymentFee:$scope.bookingSummary.onlineFees};
+                bookingAmount:$scope.bookingSummary.bookingAmt,totalAmount:$scope.bookingSummary.bookingAmt,paymentFee:$scope.bookingSummary.onlineFees,invoiceDetails:invoiceDetails};
 
 
             $http(
